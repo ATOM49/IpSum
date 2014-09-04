@@ -47,7 +47,7 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="#" class="hidden-sm">Add to list</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{% url 'users:findproducts' %}?cart={{ product.id }}" class="hidden-sm">Add to list</a></p>
                             <p class="btn-details">
                                 <i class="fa fa-list"></i><a href="{% url 'users:allsellers' product.id %}" class="hidden-sm">View Sellers</a></p>
                         </div>
@@ -58,13 +58,13 @@
                 </div>
             {#</a>#}
         </ul>
-    {% endfor %} 
+    {% endfor %}
     <div id = "shop_find_pgn">
         <ul class="pagination">
             {% paginate %}
         </ul>
     </div>
-	
+
 {% else %}
     <p>No products are available.</p>
 {% endif %}

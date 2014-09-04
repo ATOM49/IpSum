@@ -11,13 +11,13 @@
               <table class="table table-hover" id="site_offer_table">
               <tr>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
               </tr>
               {% for offer in SiteOffers %}
                 <tr>
                   <td>  </td>
-                  <td>  </td>   
+                  <td>  </td>
                   <td>  </td>
                 </tr>
               {% endfor %}
@@ -30,17 +30,21 @@
             {% if ShopOffers %}
               <table class="table table-hover" id="shop_offer_table">
               <tr>
+                <th> Shop Name </th>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
                 <th> Offer Category </th>
+                <th>Eligibility</th>
               </tr>
               {% for offer in ShopOffers %}
                 <tr>
-                  <td> {{ offer.0.offer_name }} </td>    
-                  <td> {{  offer.0.offer_info }} </td>
-                  <td> {{  offer.0.points_needed }} </td>   
-                  <td> {{  offer.0.offer_category }} </td>
+                  <td> {{ offer.offer_shop }} </td>
+                  <td> {{ offer.offer_name }} </td>
+                  <td> {{  offer.offer_info }} </td>
+                  <td> {{  offer.points_needed }} </td>
+                  <td> {{  offer.offer_category }} </td>
+                  <td>{% if offer.is_eligible %} Yes {% else %} No {% endif %}</td>
                 </tr>
               {% endfor %}
               </table>
@@ -53,16 +57,20 @@
               <table class="table table-hover" id="product_offer_table">
               <tr>
                 <th> Product Name </th>
+                <th> Shop Name </th>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
+                <th>Eligibility</th>
               </tr>
               {% for offer in ProductOffers %}
               <tr>
-                <td> {{ offer.0.offer_catalog_item.product }} </td>
-                <td> {{ offer.0.offer_name }} </td>
-                <td> {{ offer.0.offer_info }} </td>   
-                <td> {{ offer.0.points_needed }} </td>
+                <td> {{ offer.offer_catalog_item.product }} </td>
+                <td> {{ offer.offer_catalog_item.shop }} </td>
+                <td> {{ offer.offer_name }} </td>
+                <td> {{ offer.offer_info }} </td>
+                <td> {{ offer.points_needed }} </td>
+                <td>{% if offer.is_eligible %} Yes {% else %} No {% endif %}</td>
               </tr>
               {% endfor %}
               </table>

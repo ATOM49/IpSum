@@ -26,15 +26,15 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-              {% if like_button %}
-                <input type="submit" class="btn btn-primary active" value="Like" name="like_button">
+              {% if not shop_liked %}
+                <input type="button" class="btn btn-primary active" value="Like" name="like_button" onclick="location.href = '{% url 'users:shopview' shop.id %}?like=1';">
               {% else %}
-                <input type="submit" class="btn btn-primary" value="Like" name="like_button">
+                <input type="button" class="btn btn-primary" value="Like" name="like_button">
               {% endif %}
-              {% if visited_button %}
-                <input type="submit" class="btn btn-primary active" value="Visted" name="visited_button">
+              {% if not shop_visited %}
+                <input type="button" class="btn btn-primary active" value="Visted" name="visited_button" onclick="location.href = '{% url 'users:shopview' shop.id  %}?visited=1';">
               {% else %}
-                <input type="submit" class="btn btn-primary" value="Visited" name="visited_button">
+                <input type="button" class="btn btn-primary" value="Visited" name="visited_button">
               {% endif %}
             </div>
           </div>
@@ -63,41 +63,24 @@
             <div class="container-fluid" id="shop_offers_table">
             <br>
             <h2>The following offers are available!</h2>
-            <h3>Site Offers</h3>
-            {% if SiteOffers %}
-              <table class="table table-hover" id="site_offer_table">
-              <tr>
-                <th> Offer Name </th>
-                <th> Offer Details </th>    
-                <th> Points Needed </th>
-              </tr>
-              {% for offer in SiteOffers %}
-                <tr>
-                  <td>  </td>
-                  <td>  </td>   
-                  <td>  </td>
-                </tr>
-              {% endfor %}
-              </table>
-            {% else %}
-              No offers in this category!
-            {% endif %}
 
             <h3>Shop Offers</h3>
-            {% if ShopOffers %}
+            {% if shop_offers %}
               <table class="table table-hover" id="shop_offer_table">
               <tr>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
                 <th> Offer Category </th>
+                <th> Eligibility </th>
               </tr>
-              {% for offer in ShopOffers %}
+              {% for offer in shop_offers %}
                 <tr>
-                  <td> {{ offer.0.offer_name }} </td>    
-                  <td> {{  offer.0.offer_info }} </td>
-                  <td> {{  offer.0.points_needed }} </td>   
-                  <td> {{  offer.0.offer_category }} </td>
+                  <td> {{ offer.offer_name }} </td>
+                  <td> {{  offer.offer_info }} </td>
+                  <td> {{  offer.points_needed }} </td>
+                  <td> {{  offer.offer_category }} </td>
+                  <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
                 </tr>
               {% endfor %}
               </table>
@@ -106,20 +89,22 @@
             {% endif %}
 
             <h3>Product Offers</h3>
-            {% if ProductOffers %}
+            {% if product_offers %}
               <table class="table table-hover" id="product_offer_table">
               <tr>
                 <th> Product Name </th>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
+                <th> Eligibility </th>
               </tr>
-              {% for offer in ProductOffers %}
+              {% for offer in product_offers %}
               <tr>
-                <td> {{ ProductOffers.product.product_name }} </td>
-                <td> {{ ProductOffers.offer.offer_name }} </td>
-                <td> {{ ProductOffers.offer.offer_info }} </td>   
-                <td> {{ ProductOffers.offer.points_needed }} </td>
+                <td> {{ offer.offer_catalog_item.product }} </td>
+                <td> {{ offer.offer_name }} </td>
+                <td> {{ offer.offer_info }} </td>
+                <td> {{ offer.points_needed }} </td>
+                <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
               </tr>
               {% endfor %}
               </table>
@@ -157,7 +142,7 @@
                                 </div>
                                 <div class="separator clear-left">
                                     <p class="btn-add">
-                                        <i class="fa fa-shopping-cart"></i><a href="#" class="hidden-sm">Add to list</a></p>
+                                        <i class="fa fa-shopping-cart"></i><a href="{% url 'users:shopview' shop.id %}?cart={{ item.id }}" class="hidden-sm">Add to list</a></p>
                                     <p class="btn-details">
                                         <i class="fa fa-list"></i><a href="#" class="hidden-sm">Product details</a></p>
                                 </div>
