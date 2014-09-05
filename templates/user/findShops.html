@@ -6,18 +6,18 @@
 
 {% block body_block %}
 
-<div class="container-fluid" id="shop_searchbar">
-    <div class="col-sm-6">
-        <div class="input-group">
-            <form id="shop_search_form" method="post" action= "{% url 'users:findshops' %}">
-                {% csrf_token %}
-                <input type="text" class="form-control"name="querystring" value="{{queryString}}" size="50" placeholder="Type in Name of the Shop"/>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Search</button>
-                </span>
-            </form>
-        </div><!-- /input-group -->
-    </div><!-- /.col-lg-6 -->
+
+<h1 align="center">Find Shops</h1>
+<div class="container-fluid" id="shop_searchbar" align="center">
+    <div class="input-group">
+        <form id="shop_search_form" method="post" action= "{% url 'users:findshops' %}">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="querystring" value="{{queryString}}" size="50" placeholder="Type in Name of the Shop"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Search</button>
+            </span>
+        </form>
+    </div><!-- /input-group -->
 </div>
 
 
@@ -28,23 +28,23 @@
     {% for shop in shop_list %}
     <div class="container" id="shop_snippet">
     <div class="row">
-        <div class="col-xs-8 col-sm-4 col-md-4">
+        <div class="col-xs-8 col-sm-6 col-md-6">
             <div class="well well-sm" >
                 <div class="row">
                     <div class="col-sm-8 col-md-6">
                         <img src="http://webbydzine.com/wp-content/uploads/2012/07/psd-small-store-icon_main.jpg" alt="" class="img-rounded img-responsive" />
                     </div>
                     <div class="col-sm-4 col-md-6">
-                        <h4>
-                           <a href="{% url 'users:shopview' shop.id %}">{{shop.shop_name}}</a></h4>
-                        <small><cite title="San Francisco, USA"> <i class="glyphicon glyphicon-map-marker">{{shop.shop_address}}
-                        </i></cite></small>
-                        <p>
-                            <i class="glyphicon glyphicon-envelope"></i>{{shop.email}}
-                            <br />
-                            <i class="glyphicon glyphicon-phone-alt"></i>{{shop.shop_contact_no}}
-                            <br />
-                            <i class="fa fa-clock-o fa-1x"></i>{{shop.joined_date}}</p>
+                        <h4><a href="{% url 'users:shopview' shop.id %}">  {{shop.shop_name}}</a></h4>
+                        <br>
+                        <i class="glyphicon glyphicon-map-marker"></i>  {{shop.shop_address}}                        
+                        <br>
+                        <i class="glyphicon glyphicon-envelope"></i>  {{shop.shop_email}}
+                        <br>
+                        <i class="glyphicon glyphicon-phone-alt"></i>  {{shop.shop_contact_no}}
+                        <br>
+                        <i class="fa fa-clock-o fa-1x"></i>  {{shop.joined_date}}
+                        <br>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button onclick="location.href = '{% url 'users:shopview' shop.id %}';" id="myButton" class="btn btn-primary">View</button>
@@ -62,34 +62,15 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-    {% endfor %}  
-    <div id = "shop_find_pgn">
-        <ul class="pagination">
-            {% paginate %}
-        </ul>
+    {% endfor %}
+</div>  
+    <div id = "shop_find_pgn" align="center">
+        {% paginate %}
     </div>
 {% else %}
     <p>No shops are available.</p>
 {% endif %}
 
-<!-- <div id = "shop_find_pgn">
-  <li><a href="#">&laquo;</a></li>
-  <li class="active"><a href="#">1</a></li>
-  <li class="disabled"><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#">&raquo;</a></li>
-</ul>
-</div> -->
-<script>
-        // init bootpag
-        $('#shop_find_pgn').bootpag({
-            total: 10
-        }).on("page", function(event, /* page number here */ num){
-             $("#shop_results").html("Insert content"); // some ajax content loading...
-        });
-    </script>
 {% endblock %}

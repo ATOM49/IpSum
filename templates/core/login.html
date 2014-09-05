@@ -30,13 +30,13 @@
                 <br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
             </form>
-<!--             <form action="{% url 'facebook_connect' %}?facebook_login=1" method="post">
+            <form action="{% url 'facebook_connect' %}?facebook_login=1" method="post">
                 <input type="hidden" value="{{ request.path }}" name="next" />
                 <input type="hidden" value="{{ request.path }}" name="register_next" />
                 <input type="hidden" value="{{ request.path }}" name="error_next" />
                 {% csrf_token %}
                 <input onclick="F.connect(this.parentNode); return false;" type="image" src="/static/images/facebook_login.png" />
-            </form> -->
+            </form>
 
         </div>
         <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>

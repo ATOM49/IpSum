@@ -6,19 +6,17 @@
 
 {% block body_block %}
 
-<h1>Find Products</h1>
-<div class="container-fluid" id="shop_searchbar">
-    <div class="col-sm-6">
-        <div class="input-group">
-			<form id="product_search_form" method="post" action= "{% url 'users:findproducts' %}">
-			{% csrf_token %}
-			<input type="text" name="querystring" value="{{queryString}}" size="50" placeholder="Type in the Name of the Product"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Search</button>
-            </span>
-            </form>
-        </div><!-- /input-group -->
-    </div><!-- /.col-lg-6 -->
+<h1 align="center">Find Products</h1>
+<div class="container-fluid" id="product_searchbar" align="center">
+    <div class="input-group">
+		<form id="product_search_form" method="post" action= "{% url 'users:findproducts' %}">
+		{% csrf_token %}
+		<input type="text" class="form-control" name="querystring" value="{{queryString}}" size="50" placeholder="Type in the Name of the Product"/>
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Search</button>
+        </span>
+        </form>
+    </div><!-- /input-group -->
 </div>
 
 <div class="container-fluid" id="shop_results">
@@ -26,65 +24,42 @@
 {% if product_list %}
     {% autopaginate product_list 3 %}
     {% for product in product_list %}
-        <ul>
-            <div class="col-sm-6" id="catalog_int">
-                <div class="col-item">
-                    <div class="photo">
-                        <img src="http://placehold.it/350x260" class="img-responsive" alt="a" />
-                    </div>
-                    <div class="info">
-                        <div class="row">
-                            <div class="price col-md-6">
-                                <h5>{{product.product_name}}</h5>
-                                <h5 class="price-text-color">
-                                    MRP: <p>&#x20b9; {{product.mrp}}/-</p> </h5>
-                            </div>
-                            <div class="rating hidden-sm col-md-6">
-                                <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="fa fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="separator clear-left">
-                            <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="#" class="hidden-sm">Add to list</a></p>
-                            <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="{% url 'users:allsellers' product.id %}" class="hidden-sm">View Sellers</a></p>
-                        </div>
-                        <div class="clearfix">
-                        </div>
-                    </div>
-                  </div>
+        <div class="col-sm-4" id="catalog_int">
+            <div class="col-item">
+                <div class="photo">
+                    <img src="http://placehold.it/350x260" class="img-responsive" alt="a" />
                 </div>
-            {#</a>#}
-        </ul>
+                <div class="info">
+                    <div class="row">
+                        <div class="price col-md-5">
+                            <h5>{{product.product_name}}</h5>
+                            <strong class="price-text-color">
+                                MRP: <h5>&#x20b9;{{product.mrp}}/-</h5></strong>
+                        </div>
+                        <div class="rating hidden-sm col-md-7">
+                            <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                            </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                            </i><i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="separator clear-left">
+                        <br>
+                            <i class="fa fa-shopping-cart"></i><a href="#" class="hidden-sm">   Add to list</a>
+                                |
+                            <i class="fa fa-list"></i><a href="{% url 'users:allsellers' product.id %}" class="hidden-sm">    View Sellers</a>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                </div>
+              </div>
+            </div>
     {% endfor %} 
-    <div id = "shop_find_pgn">
-        <ul class="pagination">
-            {% paginate %}
-        </ul>
+</div>
+    <div id = "products_find_pgn" align="center">
+        {% paginate %}
     </div>
 	
 {% else %}
-    <p>No products are available.</p>
+    <strong>No products are available.</p>
 {% endif %}
-<!-- <div id = "product_find_pgn">
-<ul class="pagination">
-  <li><a href="#">&laquo;</a></li>
-  <li class="active"><a href="#">1</a></li>
-  <li class="disabled"><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#">&raquo;</a></li>
-</ul>
-</div> -->
-<script>
-        // init bootpag
-        $('#shop_find_pgn').bootpag({
-            total: 10
-        }).on("page", function(event, /* page number here */ num){
-             $("#shop_results").html("Insert content"); // some ajax content loading...
-        });
-    </script>
 {% endblock %}

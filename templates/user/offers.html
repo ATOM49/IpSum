@@ -3,7 +3,7 @@
 {%block title%} Offers {%endblock%}
 
 {% block body_block %}
-<div class="container-fluid" id="user_offers_table">
+<div class="container-fluid" id="user_offers_table" align="center">
             <br>
             <h2>The following offers are available!</h2>
             <h3>Site Offers</h3>
@@ -33,14 +33,14 @@
                 <th> Offer Name </th>
                 <th> Offer Details </th>    
                 <th> Points Needed </th>
-                <th> Offer Category </th>
+                <th> Offer Shop </th>
               </tr>
               {% for offer in ShopOffers %}
                 <tr>
                   <td> {{ offer.0.offer_name }} </td>    
                   <td> {{  offer.0.offer_info }} </td>
                   <td> {{  offer.0.points_needed }} </td>   
-                  <td> {{  offer.0.offer_category }} </td>
+                  <td> {{  offer.0.offer_shop }} </td>
                 </tr>
               {% endfor %}
               </table>

@@ -1,12 +1,18 @@
 {% extends 'user/user_base.html' %}
 
 {% block body_block %}
-<div class="container" id="search_container">
-  <div class="col-sm-6">
-	<a href="{% url 'users:findproducts' %}" class="btn btn-xlarge" id="product_search">Search for Products</a>
-  </div>
-  <div class="col-sm-6">
-	<a href="{% url 'users:findshops' %}" class="btn btn-xlarge" id="shop_search">Search for Shops</a>
-  </div>
+<div class="container-fluid" id="search_container">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="container" id="shop_container">
+				<a href="{% url 'users:findproducts' %}" class="btn btn-xlarge" id="product_search">Search for Products</a>
+	  		</div>
+  		</div>
+	  	<div class="col-md-6">
+  			<div class="container" id="product_container">
+				<a href="{% url 'users:findshops' %}" class="btn btn-xlarge" id="shop_search">Search for Shops</a>
+		  	</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
