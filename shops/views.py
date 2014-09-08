@@ -119,17 +119,18 @@ def ManageOffersView(request, shopid):
     product_offer_form = None
 
     context["shop"] = shop
+    print shop
+
     if request.method == 'POST':
         if request.GET.get("shop_offer_form") and int(request.GET.get("shop_offer_form")) == 2: #submitted
             print "catalog form submitted"
             shop_offer_form = ShopAdminShopOfferForm(data=request.POST)
             if shop_offer_form.is_valid():
                 shop_offer = shop_offer_form.save(commit = False)
-                shop_offer.shop = shop
+                shop_offer.offer_shop = shop
                 shop_offer.save()
                 shop_offer_form = None
         elif request.GET.get("product_offer_form") and int(request.GET.get("product_offer_form")) == 2: #submitted
-            print "catalog form submitted2"
             product_offer_form = ShopAdminProductOfferForm(data=request.POST, shop=shop)
             if product_offer_form.is_valid():
                 product = product_offer_form.cleaned_data.get('product')
@@ -168,11 +169,12 @@ def ManageOffersView(request, shopid):
     #get list of shop offers
     shop_offers = shop.shopoffer_set.all()
     context['shop_offers'] = shop_offers
+
     #get list of product offers
     product_offers = ProductOffer.objects.filter(offer_catalog_item__shop_id=shop.id)
     context['shop_offers'] = shop_offers
     context['product_offers'] = product_offers
-    
+
     #list of shops
     shops = request.user.shop_set.all()
     context['shops'] = shops

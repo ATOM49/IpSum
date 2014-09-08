@@ -1,0 +1,47 @@
+{% extends 'user/user_base.html' %}
+
+{% block body_block %}
+<div class="container-fluid">
+    {% if shopping_cart %}
+        <table class = "table table-hover" id="shopping_cart_table">
+            <tr>
+                <th align="center">Product Name</th>
+                <th align="center">Product Price</th>
+                <th align="center">Shop Name</th>
+            </tr>
+
+            {% for item in shopping_cart %}
+                <tr>
+                  <td>{{ item.product }}</td>
+                  <td>{{ item.product.mrp }}</td>
+                  <td>{% if item.shop %} {{ item.shop }} {% else %} n/a {% endif %}</td>
+                </tr>
+              {% endfor %}
+        </table>
+    {% else %}
+        There are no items in your cart currently.
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+{% if shopping_cart %}
+
+    <table>
+        <tr>
+            <th> Product Name </th>
+            <th> Product Price </th>
+            <th> Shop Name </th>
+        </tr>
+        {% for item in shopping_cart %}
+            <tr>
+              <td>{{ item.product }}</td>
+              <td>{{ item.product.mrp }}</td>
+              <td>{% if item.shop %} {{ item.shop }} {% else %} n/a {% endif %}</td>
+            </tr>
+          {% endfor %}
+    </table>
+{% else %}
+    There are no items in your cart currently.
+{% endif %}

@@ -19,11 +19,6 @@
             <form class="form-login span4" id="login_form" method="post" action= "{% url 'core:login' %}">
             {% csrf_token %}
             <h2 class="form-login-heading" align ="center">Ipsum</h2>
-<!--             {% if bad_details %}
-                <p><strong>Your username and/or password were incorrect!</strong></p>
-            {% elif disabled_account %}
-                <p><strong>Your account is currently disabled. We can't log you in!</strong></p>
-            {% endif %} -->
                 <input type="text" name="username" value="" size="50" class="form-control" placeholder="User Name" required autofocus/>
                 <br>
                 <input type="password" name="password" value="" size="50" class="form-control" placeholder="Password" required autofocus />

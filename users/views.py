@@ -1,18 +1,25 @@
+from datetime import datetime
+
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render_to_response,render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext, loader
-from datetime import datetime
-from django.contrib.auth import logout
-from shops.models import Shop, Catalog, ShopUserRelation
-from users.models import UserProfile
+
 from products.models import Product
+from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer,\
+    ShoppingCart
+from users.models import UserProfile
+
+
+
 
 @login_required
 def HomeView(request,shopid=None):
     home=True
-    if request.user.groups.filter(name='consumers'):
+#Consumer Home
+    if request.user.groups.filter(name='consumer'):
         visits = int(request.COOKIES.get('visits', '0'))
         if request.session.get('last_visit'):
             last_visit_time = request.session.get('last_visit')
@@ -28,8 +35,8 @@ def HomeView(request,shopid=None):
         else:
             count = 0
         return render_to_response("user/home.html", {'visits':count,'home':home}, context_instance=RequestContext(request))
-    
 
+#Shop_Admin View
     elif request.user.groups.filter(name='shopadmin'):
         context = {}
         shops = request.user.shop_set.all()
@@ -83,34 +90,56 @@ def ShopView(request, shopid):
     template_name = 'user/shop_view.html'
     context_objects_name = ('shop',
                             'shop_catalog',
+                            'shop_offers',
+                            'product_offers',
                             'shop_visited',
                             'shop_liked',
-                            'like_button',
-                            'visited_button',
                             'loyalty_points')
-    print "8888888888888"    
-    user = request.user
+
     shop = Shop.objects.get(id=shopid)
-    like_button=False
-    visited_button = False
-
-
+    user = request.user
     relation,created = ShopUserRelation.objects.get_or_create(shop=shop,user=user)
 
-    if request.POST.get('like_button'):
-        like_button=True
-        relation.user_like = True
-        relation.loyalty_points += 50
-    if request.POST.get('visited_button'):
-        visited_button = True
-        relation.user_like = True
-        relation.loyalty_points += 100
-    
-    loyalty_points = relation.loyalty_points
+    if request.GET.get('like'):
+        if not relation.user_like:
+            relation.user_like = True
+            relation.loyalty_points += 50
+            relation.save()
+    if request.GET.get('visited'):
+        if not relation.visited:
+            relation.visited = True
+            relation.loyalty_points += 100
+            relation.save()
+    if request.GET.get('cart'):
+        itemid = int(request.GET.get('cart'))
+        catalog_item = Catalog.objects.get(id=itemid)
+        cart, created = ShoppingCart.objects.get_or_create(user=user, product=catalog_item.product, shop=catalog_item.shop)
+        if not created:
+            cart.isCatalogItem = True
+            cart.save()
+        #handle already in cart case using "created"
+    print ShoppingCart.objects.all()
 
-    context_objects = (shop, shop.catalog_set.all(),relation.visited,relation.user_like,loyalty_points)
+    #get list of shop offers
+    shop_offers = shop.shopoffer_set.all()
+    for offer in shop_offers: offer.eligibilityCheck(user)
+    print shop_offers
+
+    #get list of product offers
+    product_offers = ProductOffer.objects.filter(offer_catalog_item__shop_id=shop.id)
+    for offer in product_offers: offer.eligibilityCheck(user, shop)
+
+    print relation.visited, relation.user_like, relation.loyalty_points
+
+    context_objects = (shop,
+                       shop.catalog_set.all(),
+                       shop_offers,
+                       product_offers,
+                       relation.visited,
+                       relation.user_like,
+                       relation.loyalty_points)
     context = RequestContext(request, dict(zip(context_objects_name,context_objects)))
-    
+
     template = loader.get_template(template_name)
     return HttpResponse(template.render(context))
 
@@ -127,6 +156,16 @@ def FindProductsView(request):
         queryString = ''
         productList = Product.objects.all()
         context_objects = [productList, queryString]
+        
+    if request.GET.get('cart'):
+        itemid = int(request.GET.get('cart'))
+        product_item = Product.objects.get(id=itemid)
+        cart, created = ShoppingCart.objects.get_or_create(user=request.user, product=product_item)
+        if not created:
+            cart.isCatalogItem = False
+            cart.save()
+        #handle already in cart case using "created"
+        
     context = dict(zip(context_object_names, context_objects))
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
@@ -145,6 +184,7 @@ def AllSellersView(request, prodid):
 
 @login_required
 def OfferView(request):
+
     context= RequestContext(request)
     context = {"SiteOffers" : None}
 
@@ -154,7 +194,9 @@ def OfferView(request):
     for s in shops:
         offers = s.shopoffer_set.all()
         if offers:
-            ShopOffers.append((offers))
+            for offer in offers:
+                offer.eligibilityCheck(request.user)
+                ShopOffers.append(offer)
     context["ShopOffers"] = ShopOffers
 
     #productOffers
@@ -163,12 +205,19 @@ def OfferView(request):
     for c in catalog_items:
         offers = c.productoffer_set.all()
         if offers:
-            ProductOffers.append((offers))
+            for offer in offers:
+                offer.eligibilityCheck(request.user, c.shop)
+                ProductOffers.append(offer)
     context["ProductOffers"] = ProductOffers
-    print (ShopOffers)
-    print ProductOffers
 
     return render_to_response("user/offers.html",context,context_instance=RequestContext(request))
+
+
+@login_required
+def ShoppingCartView(request):
+    shopping_cart = request.user.shoppingcart_set.all()
+    context = {'shopping_cart' : shopping_cart}
+    return render_to_response("user/shoppingCart.html",context,context_instance=RequestContext(request))
 
 @login_required
 def PointsView(request):
