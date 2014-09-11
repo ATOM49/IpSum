@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import django_facebook
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -48,14 +47,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'guardian',
+    'south',
     'shops',
     'products',
     'users',
     'core',
     'crispy_forms',
     'pagination',
-    # 'django_facebook',
-    'guardian',
+    'django_facebook',
     'waypoints',
 )
 
@@ -97,27 +97,29 @@ WSGI_APPLICATION = 'IpSum.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-'''sqlite3 config
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-'''
+
+
+#sqlite3 config
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+
 
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': "postgis",
-        'USER': 'rohit',
+        'NAME': "ipsum",
+        'USER': 'postgres',
         'PASSWORD': '123',
         'HOST': ''
     }
 }
 
-GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\geos_c.dll'
+#GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin'
 
 
 # Internationalization
