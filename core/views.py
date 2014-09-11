@@ -69,6 +69,10 @@ def RegistrationView(request, usertype):
         return HttpResponse("invalid user type provided")#TODO replace with 404 error
 
 
+# def cart_context_processor(request):
+#     cart = Cart(request)
+#     return { 'cart_item_count' : cart.item_count }
+
 @login_required
 def LogoutView(request):
     logout(request)

@@ -18,6 +18,7 @@ from users.models import UserProfile
 @login_required
 def HomeView(request,shopid=None):
     home=True
+#Consumer Home
     if request.user.groups.filter(name='consumer'):
         visits = int(request.COOKIES.get('visits', '0'))
         if request.session.get('last_visit'):
@@ -35,7 +36,7 @@ def HomeView(request,shopid=None):
             count = 0
         return render_to_response("user/home.html", {'visits':count,'home':home}, context_instance=RequestContext(request))
 
-
+#Shop_Admin View
     elif request.user.groups.filter(name='shopadmin'):
         context = {}
         shops = request.user.shop_set.all()
@@ -117,13 +118,11 @@ def ShopView(request, shopid):
             cart.isCatalogItem = True
             cart.save()
         #handle already in cart case using "created"
-    print "shoooooooooooooooooooooopping Cartttttttttttttt"
     print ShoppingCart.objects.all()
 
     #get list of shop offers
     shop_offers = shop.shopoffer_set.all()
     for offer in shop_offers: offer.eligibilityCheck(user)
-    print "#############################"
     print shop_offers
 
     #get list of product offers

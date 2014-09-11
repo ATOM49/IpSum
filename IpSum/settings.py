@@ -34,7 +34,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'ipsum.example.com']
 
 
 # Application definition
@@ -79,14 +80,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    # 'django_facebook.context_processors.facebook',
+    'django_facebook.context_processors.facebook',
 )
 
 ANONYMOUS_USER_ID = -1
 AUTHENTICATION_BACKENDS = (
-    # 'django_facebook.auth_backends.FacebookBackend',
+    'django_facebook.auth_backends.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
+    # 'guardian.backends.ObjectPermissionBackend',
 )
 
 
@@ -147,10 +148,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 #Custom User Profile AUTH settings
 AUTH_PROFILE_MODULE= 'users.UserProfile'
-
+FACEBOOK_AUTH_PROFILE_MODULE= 'users.FacebookProfile'
 
 #Facebook Initialzation
-# FACEBOOK_APP_ID = '637419996372962'
-# FACEBOOK_APP_SECRET = '7d56623819e89c6f5671f7b456f5d3f8'
-# AUTH_USER_MODEL = 'django_facebook.FacebookCustomUser'
-# AUTH_PROFILE_MODULE = 'django_facebook.FacebookProfile'
+FACEBOOK_APP_ID = '637419996372962'
+FACEBOOK_APP_SECRET = '7d56623819e89c6f5671f7b456f5d3f8'
+FACEBOOK_AUTH_USER_MODEL = 'django_facebook.models.FacebookProfileModel'
+# FACEBOOK_AUTH_PROFILE_MODULE = 'django_facebook.FacebookProfile'
+FACEBOOK_DEFAULT_SCOPE = ['email', 'user_birthday', 'user_website', 'user_friends']
+FACEBOOK_STORE_LIKES = True
+FACEBOOK_STORE_FRIENDS = True

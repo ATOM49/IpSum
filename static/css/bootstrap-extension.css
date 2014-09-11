@@ -355,3 +355,17 @@ footer{
 #user_offers_table .table{
     color: #000;
 }
+#products_find_pgn{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#shop_find_pgn{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#shop_search_form{
+    margin-left: 25%;
+}
+#product_search_form{
+    margin-left: 25%;
+}

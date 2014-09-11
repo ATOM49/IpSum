@@ -3,10 +3,10 @@ from django import forms
 
 class UserProfileForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
-    username = forms.CharField(max_length=30,help_text=False)
+    username = forms.CharField(max_length=30,help_text = False)
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('first_name','last_name','username', 'email', 'password')
         widgets = {
             'password': forms.PasswordInput(),
         }
