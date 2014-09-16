@@ -2,6 +2,7 @@ from django.db import models
 from products.models import Product
 from django.contrib.auth.models import User
 from core import modelFieldChoicesManager as MCM
+from django.contrib.gis.db import models
 
 # Create your models here.
 
@@ -11,9 +12,8 @@ class Shop(models.Model):
 
     #Shop Details
     shop_name = models.CharField(max_length=128)
-    shop_address = models.CharField(max_length=256, null = True) # TODO change to incorporate multiple address lines
     shop_category = models.CharField(max_length=2,choices = MCM.SHOP_CATEGORY_CHOICES(), default = 'GS')
-    shop_location = models.CommaSeparatedIntegerField(max_length=20, null = True)
+    # shop_location = models.CommaSeparatedIntegerField(max_length=20, null = True)
     shop_contact_no = models.CharField(max_length=15, null = True) # TODO multiple nos
     shop_email = models.EmailField(max_length=30, null = True) # TODO multiple emails
     #shop_image_path = models.FilePathField(null = True) # TODO change to store paths only
@@ -24,6 +24,20 @@ class Shop(models.Model):
     def __str__(self):
         return self.shop_name
 
+
+class Zipcode(models.Model):
+    code = models.CharField(max_length=5)
+    poly = models.PolygonField()
+    objects = models.GeoManager()
+
+class ShopAddress(models.Model):
+    shop = models.ForeignKey(Shop)
+    num = models.IntegerField()
+    street = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=2)
+    zipcode = models.ForeignKey(Zipcode)
+    objects = models.GeoManager()
 
 class Catalog(models.Model):
 
