@@ -94,7 +94,8 @@ def ShopView(request, shopid):
                             'product_offers',
                             'shop_visited',
                             'shop_liked',
-                            'loyalty_points')
+                            'loyalty_points',
+                            'token')
 
     shop = Shop.objects.get(id=shopid)
     user = request.user
@@ -130,19 +131,35 @@ def ShopView(request, shopid):
     for offer in product_offers: offer.eligibilityCheck(user, shop)
 
     print relation.visited, relation.user_like, relation.loyalty_points
-
+    token = build_twilio_token(shop.shop_name)
     context_objects = (shop,
                        shop.catalog_set.all(),
                        shop_offers,
                        product_offers,
                        relation.visited,
                        relation.user_like,
-                       relation.loyalty_points)
-    context = RequestContext(request, dict(zip(context_objects_name,context_objects)))
+                       relation.loyalty_points,
+                       token)
+    context = RequestContext(request, dict(zip(context_objects_name, context_objects)))
 
     template = loader.get_template(template_name)
     return HttpResponse(template.render(context))
 
+#for calls
+def build_twilio_token(client_name):
+ 
+    # Find these values at twilio.com/user/account
+    account_sid = 'AC9dbcad82b20275e6e1854351444f13c3'
+    auth_token = 'd5eb94487e911314e5620b4ea18e6d74'
+ 
+    capability = TwilioCapability(account_sid, auth_token)
+    # This is the app Sid of your TwiML app
+    app_sid = 'AP4679912e15024febe5d6d1fc814e7c7d'
+ 
+    capability.allow_client_outgoing(app_sid)
+    capability.allow_client_incoming(client_name)
+ 
+    return capability.generate()
 
 @login_required
 def FindProductsView(request):

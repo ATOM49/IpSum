@@ -98,28 +98,28 @@ WSGI_APPLICATION = 'IpSum.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-"""
-sqlite3 config
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-"""
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': "postgis",
-        'USER': 'mirji',
-        'PASSWORD': '123',
-        'HOST': ''
-    }
-}
 
-GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\geos_c.dll'
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': "postgis",
+#         'USER': 'mirji',
+#         'PASSWORD': '123',
+#         'HOST': ''
+#     }
+# }
+
+# GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\geos_c.dll'
 
 
 # Internationalization

@@ -1,5 +1,5 @@
 {% extends 'user/user_core.html' %}
-
+<script src='//static.twilio.com/libs/twiliojs/1.1/twilio.min.js'></script>
 {%block title%} {{shop.shop_name}} {%endblock%}
 {% load pagination_tags %}
 {% block central_block %}
@@ -178,6 +178,22 @@
     </div>
   </div>
   </div>
-</div>
 
+
+    #javascript to open the twilio device
+    <script type="text/javascript">
+
+      Twilio.Device.setup("{{ token }}");
+
+      function call(item_of_choice) {
+        params = {"item": item_of_choice, "name": '{{client_name}}'};
+        Twilio.Device.connect(params);
+      }
+
+      function hangup() {
+        Twilio.Device.disconnectAll();
+      }
+
+      console.log('{{client_name}}');
+    </script>
 {%endblock%}
