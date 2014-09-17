@@ -13,6 +13,45 @@ from shops.models import Catalog, Shop, ProductOffer, ShopOffer
 # Create your views here.
 
 @login_required
+def HomeView(request, shopid = None):
+    context = {}
+    shops = request.user.shop_set.all()
+    context['shops'] = shops
+    #check if shop if specified
+    if shopid == None:
+        if shops:
+            shop = shops[0]
+        else:
+            shop = None
+    #test that perms for specified shop exists
+    else:
+        try:
+            shop = Shop.objects.get(id = shopid)
+            if not shop.shop_admin.id == request.user.id:
+                raise Exception
+        except:
+            return HttpResponse("The requested shop does not exist or is inaccessible for this current shopadmin.")
+
+    context["shop"] = shop
+    print shop.shop_latitude, shop.shop_longitude
+
+    #map_config
+    change_location = False
+
+    if request.method == 'POST':
+        print request.POST
+    if request.GET.get("edit") and int(request.GET.get("edit")) == 1:
+        change_location = True
+    if request.GET.get("save"):
+        loc = request.GET.get("save")
+        print "$$$$$$$$$$$$$$$$$", loc, type(loc)
+        change_location = False
+    context["change_location"] = change_location
+    #print str(shop)
+    return render_to_response("shops/shop_home.html", context, context_instance=RequestContext(request))
+
+
+@login_required
 def ManageCatalogView(request, shopid):
     if not request.user.groups.filter(name='shopadmin'):
         return HttpResponse("invalid group")

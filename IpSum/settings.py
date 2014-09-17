@@ -47,8 +47,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
-    'guardian',
     'south',
     'shops',
     'products',
@@ -57,7 +55,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'pagination',
     'django_facebook',
-    'waypoints',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,14 +98,14 @@ WSGI_APPLICATION = 'IpSum.wsgi.application'
 
 
 #sqlite3 config
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
-
+'''
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -120,8 +117,8 @@ DATABASES = {
     }
 }
 
-#GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin'
-
+#GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal110.dll'
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
