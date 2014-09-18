@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f94a91eb-8691-47ff-8c6d-e7aa210b6257" name="Default" comment="">
-      <change type="MOVED" beforePath="C:\Django Site\IpSum\users\call" afterPath="$PROJECT_DIR$/core/twilio_call.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/forms.py" afterPath="$PROJECT_DIR$/shops/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/models.py" afterPath="$PROJECT_DIR$/shops/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IpSum/settings.py" afterPath="$PROJECT_DIR$/IpSum/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/shop_view.html" afterPath="$PROJECT_DIR$/templates/user/shop_view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IpSum/urls.py" afterPath="$PROJECT_DIR$/IpSum/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/views.py" afterPath="$PROJECT_DIR$/core/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/views.py" afterPath="$PROJECT_DIR$/shops/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/users/views.py" afterPath="$PROJECT_DIR$/users/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IpSum.iws" />
@@ -420,7 +410,7 @@
           <file leaf-file-name="urls.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/IpSum/urls.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2816568" vertical-offset="0" max-vertical-offset="845">
+                <state vertical-scroll-proportion="0.28199053" vertical-offset="0" max-vertical-offset="844">
                   <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#51#0" expanded="true" />
@@ -466,7 +456,7 @@
           <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/users/urls.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="868">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="867">
                   <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#42#0" expanded="true" />
@@ -835,19 +825,24 @@
       <created>1410956112566</created>
       <updated>1410956112566</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="social_auth">
+      <created>1411032310573</created>
+      <updated>1411032310573</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
+    <editor active="false" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18520783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32897604" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -857,7 +852,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -880,7 +874,8 @@
     </option>
     <MESSAGE value="Added PostGre&#10;Added Shop Address and PinCode models" />
     <MESSAGE value="added js for calling, need to add twilio funct" />
-    <option name="LAST_COMMIT_MESSAGE" value="added js for calling, need to add twilio funct" />
+    <MESSAGE value="social_auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="social_auth" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1151,6 +1146,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9230769" vertical-offset="2724" max-vertical-offset="3706">
           <caret line="204" column="0" selection-start-line="204" selection-start-column="0" selection-end-line="204" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1257,7 +1253,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IpSum/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2816568" vertical-offset="0" max-vertical-offset="845">
+        <state vertical-scroll-proportion="0.28199053" vertical-offset="0" max-vertical-offset="844">
           <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
