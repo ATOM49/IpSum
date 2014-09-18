@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f94a91eb-8691-47ff-8c6d-e7aa210b6257" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/forms.py" afterPath="$PROJECT_DIR$/shops/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/core/login.html" afterPath="$PROJECT_DIR$/templates/core/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/shops/manageShops.html" afterPath="$PROJECT_DIR$/templates/shops/manageShops.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/models.py" afterPath="$PROJECT_DIR$/shops/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/urls.py" afterPath="$PROJECT_DIR$/shops/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shops/views.py" afterPath="$PROJECT_DIR$/shops/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IpSum.iws" />
@@ -806,11 +800,15 @@
       <created>1411032310573</created>
       <updated>1411032310573</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="address_form">
+      <created>1411035511201</created>
+      <updated>1411035511201</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -852,7 +850,8 @@
     <MESSAGE value="Added PostGre&#10;Added Shop Address and PinCode models" />
     <MESSAGE value="added js for calling, need to add twilio funct" />
     <MESSAGE value="social_auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="social_auth" />
+    <MESSAGE value="address_form" />
+    <option name="LAST_COMMIT_MESSAGE" value="address_form" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
