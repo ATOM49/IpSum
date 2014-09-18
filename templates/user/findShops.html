@@ -37,7 +37,7 @@
                     <div class="col-sm-4 col-md-6">
                         <h4><a href="{% url 'users:shopview' shop.id %}">  {{shop.shop_name}}</a></h4>
                         <br>
-                        <i class="glyphicon glyphicon-map-marker"></i>  {{shop.shop_address}}                        
+                        <i class="glyphicon glyphicon-map-marker"></i>  {{shop.shop_address}}
                         <br>
                         <i class="glyphicon glyphicon-envelope"></i>  {{shop.shop_email}}
                         <br>
@@ -65,7 +65,7 @@
     </div>
 
     {% endfor %}
-</div>  
+</div>
     <div id = "shop_find_pgn" align="center">
         {% paginate %}
     </div>

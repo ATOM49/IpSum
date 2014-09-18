@@ -32,22 +32,22 @@ def HomeView(request, shopid = None):
         except:
             return HttpResponse("The requested shop does not exist or is inaccessible for this current shopadmin.")
 
-    context["shop"] = shop
-    print shop.shop_latitude, shop.shop_longitude
+
 
     #map_config
     change_location = False
-
     if request.method == 'POST':
-        print request.POST
-    if request.GET.get("edit") and int(request.GET.get("edit")) == 1:
-        change_location = True
-    if request.GET.get("save"):
-        loc = request.GET.get("save")
-        print "$$$$$$$$$$$$$$$$$", loc, type(loc)
-        change_location = False
+        if 'update' in request.POST:
+            change_location = True
+        elif 'save' in request.POST:
+            change_location = False
+            shop.shop_latitude = request.POST['latitude']
+            shop.shop_longitude = request.POST['longitude']
+            shop.save()
+
+    context["shop"] = shop
     context["change_location"] = change_location
-    #print str(shop)
+    print shop.shop_latitude, shop.shop_longitude
     return render_to_response("shops/shop_home.html", context, context_instance=RequestContext(request))
 
 

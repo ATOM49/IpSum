@@ -15,4 +15,5 @@ urlpatterns = patterns('',
 
     url(r'^logout/$', core_views.LogoutView, name='logout'),
     url(r'^shoppingcart/$', views.ShoppingCartView, name='shoppingcart'),
+    url(r'^nearbyshops/$', views.NearbyShopsView, name='nearbyshops'),
 )
