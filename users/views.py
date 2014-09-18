@@ -1,19 +1,17 @@
 from datetime import datetime
-
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-
 from products.models import Product
 from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer,\
     ShoppingCart
 from users.models import UserProfile
 from shops.views import HomeView as ShopAdminHomeView
-
-
+from twilio.util import TwilioCapability
+from core.twilio_call import build_twilio_token
 
 
 @login_required
@@ -126,22 +124,6 @@ def ShopView(request, shopid):
 
     template = loader.get_template(template_name)
     return HttpResponse(template.render(context))
-
-#for calls
-def build_twilio_token(client_name):
- 
-    # Find these values at twilio.com/user/account
-    account_sid = 'AC9dbcad82b20275e6e1854351444f13c3'
-    auth_token = 'd5eb94487e911314e5620b4ea18e6d74'
- 
-    capability = TwilioCapability(account_sid, auth_token)
-    # This is the app Sid of your TwiML app
-    app_sid = 'AP4679912e15024febe5d6d1fc814e7c7d'
- 
-    capability.allow_client_outgoing(app_sid)
-    capability.allow_client_incoming(client_name)
- 
-    return capability.generate()
 
 @login_required
 def FindProductsView(request):

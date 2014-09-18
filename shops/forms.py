@@ -6,7 +6,7 @@ from shops.models import Shop, Catalog, ShopOffer, ProductOffer, ShopAddress
 class ShopProfileForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('shop_name', 'shop_category', 'shop_address', 'shop_email')
+        fields = ('shop_name', 'shop_category', 'shop_email')
 
 
 class ShopAdminCatalogForm(forms.ModelForm):

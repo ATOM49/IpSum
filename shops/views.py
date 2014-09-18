@@ -10,6 +10,9 @@ from products.forms import ProductForm
 from shops.forms import ShopProfileForm, ShopAdminCatalogForm, \
     ShopAdminShopOfferForm, ShopAdminProductOfferForm
 from shops.models import Catalog, Shop, ProductOffer, ShopOffer
+from core.twilio_call import build_twilio_token
+
+
 # Create your views here.
 
 @login_required
@@ -272,7 +275,18 @@ def ManageShopsView(request):
     context['shops'] = shops
     return render_to_response("shops/manageShops.html", context, context_instance=RequestContext(request))
 
+p_app_id='89743'
+p_key='fc3f7ce5a53bc331ec26'
+p_secret='ce2ddcccec20e0ecd5a3'
 
+@login_required
+def CallControlView(request, shopid):
+    shop = Shop.objects.get(id=shopid)
+    call_admin = shop.shop_admin
+    token = build_twilio_token('Admin')
+
+    return render_to_response("shops/control_call.html.html", {"token" : token,"client_name" : shop.shop_name,
+        "pusher_key" : p_key}, context_instance=RequestContext(request))
 
 
 # @login_required

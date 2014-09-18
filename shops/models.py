@@ -2,14 +2,12 @@ from django.db import models
 from products.models import Product
 from django.contrib.auth.models import User
 from core import modelFieldChoicesManager as MCM
-from django.contrib.gis.db import models
+# from django.contrib.gis.db import models
 
 # Create your models here.
 
 
-
 class Shop(models.Model):
-
     #Shop Details
     shop_name = models.CharField(max_length=128)
     shop_category = models.CharField(max_length=2,choices = MCM.SHOP_CATEGORY_CHOICES(), default = 'GS')
@@ -28,8 +26,9 @@ class Shop(models.Model):
 
 class Zipcode(models.Model):
     code = models.CharField(max_length=5)
-    poly = models.PolygonField()
-    objects = models.GeoManager()
+    # poly = models.PolygonField()
+    # objects = models.GeoManager()
+
 
 class ShopAddress(models.Model):
     shop = models.ForeignKey(Shop)
@@ -38,7 +37,8 @@ class ShopAddress(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2)
     zipcode = models.ForeignKey(Zipcode)
-    objects = models.GeoManager()
+    # objects = models.GeoManager()
+
 
 class Catalog(models.Model):
 
@@ -48,6 +48,7 @@ class Catalog(models.Model):
 
     def __str__(self):
         return self.product
+
 
 class ProductOffer(models.Model):
     offer_name = models.CharField(max_length=128)
@@ -83,6 +84,7 @@ class ShopUserRelation(models.Model):
     def __str__(self):
         return "Shop User Relation Item " + str(self.id)
 
+
 class ShopOffer(models.Model):
     offer_name = models.CharField(max_length=128)
     offer_info = models.CharField(max_length=1024, null = True)
@@ -102,6 +104,7 @@ class ShopOffer(models.Model):
     def __str__(self):
         return self.offer_name
 
+
 class ProductUserRelation(models.Model):
 
     product = models.ForeignKey(Product)
@@ -111,13 +114,13 @@ class ProductUserRelation(models.Model):
     def __str__(self):
         return "Product User Relation Item " + str(self.id)
 
+
 class ShoppingCart(models.Model):
 
     user = models.ForeignKey(User)
     product = models.ForeignKey(Product)
     shop = models.ForeignKey(Shop, null = True, default = None)
     isCatalogItem = False
-
 
 
 class History(models.Model):
