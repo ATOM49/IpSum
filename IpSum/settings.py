@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import django_facebook
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -48,7 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
+    'south',
     'shops',
     'products',
     'users',
@@ -56,8 +55,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'pagination',
     'django_facebook',
-    'guardian',
-    'waypoints',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,19 +105,20 @@ DATABASES = {
 }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-#         'NAME': "postgis",
-#         'USER': 'mirji',
-#         'PASSWORD': '123',
-#         'HOST': ''
-#     }
-# }
+'''
+DATABASES = {
+    'default': {
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': "ipsum",
+        'USER': 'postgres',
+        'PASSWORD': '123',
+        'HOST': ''
+    }
+}
 
-# GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\geos_c.dll'
-
+#GEOS_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal110.dll'
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

@@ -1,5 +1,47 @@
 {%extends 'shops/shop_base.html' %}
 
 {% block body_block %}
-Home 
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+
+<script>
+function initialize() {
+  var mapOptions = {
+    zoom: 18,
+    center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
+  };
+
+  var map = new google.maps.Map(document.getElementById('googleMap'),
+      mapOptions);
+
+  var marker = new google.maps.Marker({
+    position: map.getCenter(),
+    map: map,
+    {% if change_location %}draggable: true,{% endif %}
+    title: '{{ shop.shop_name }}'
+  });
+}
+
+function enableEditing(){
+    window.location = "{% url users:home shop.id %?edit=1}"
+}
+function saveLocation(){
+    window.location = "{% url users:home shop.id %?save=" + marker.getPosition()
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div id="googleMap" style="width:500px;height:380px;"></div>
+    <input type="text" id = "location", hidden = true/>
+{% if change_location %}
+    <button type="submit" onclick="saveLocation()" class="btn btn-md btn-primary" id="save" >Save My Location</button>
+{% else %}
+    <button type="submit" onclick="enableEditing()" class="btn btn-md btn-primary" id="update" >Update My Location</button>
+{% endif %}
+
+
+
+
 {% endblock %}

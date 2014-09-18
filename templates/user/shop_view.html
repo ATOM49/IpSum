@@ -185,8 +185,8 @@
 
       Twilio.Device.setup("{{ token }}");
 
-      function call(item_of_choice) {
-        params = {"item": item_of_choice, "name": '{{client_name}}'};
+      function call(shop) {
+        params = {"shop": shop, "name": '{{client_name}}'};
         Twilio.Device.connect(params);
       }
 

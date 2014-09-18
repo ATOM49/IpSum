@@ -11,6 +11,7 @@ from products.models import Product
 from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer,\
     ShoppingCart
 from users.models import UserProfile
+from shops.views import HomeView as ShopAdminHomeView
 
 
 
@@ -38,28 +39,7 @@ def HomeView(request,shopid=None):
 
 #Shop_Admin View
     elif request.user.groups.filter(name='shopadmin'):
-        context = {}
-        shops = request.user.shop_set.all()
-        context['shops'] = shops
-        #check if shop if specified
-        if shopid == None:
-            shops = request.user.shop_set.all()
-            if shops:
-                shop = shops[0]
-            else:
-                shop = None
-        #test that perms for specified shop exists
-        else:
-            try:
-                shop = Shop.objects.get(id = shopid)
-                if not shop.shop_admin.id == request.user.id:
-                    raise Exception
-            except:
-                return HttpResponse("The requested shop does not exist or is inaccessible for this current shopadmin.")
-
-        context["shop"] = shop
-        print str(shop)
-        return render_to_response("shops/shop_home.html", context, context_instance=RequestContext(request))
+        return ShopAdminHomeView(request, shopid)
 
 
     elif request.user.groups.filter(name='admin'):
@@ -131,7 +111,9 @@ def ShopView(request, shopid):
     for offer in product_offers: offer.eligibilityCheck(user, shop)
 
     print relation.visited, relation.user_like, relation.loyalty_points
-    token = build_twilio_token(shop.shop_name)
+
+    token = build_twilio_token(user)
+
     context_objects = (shop,
                        shop.catalog_set.all(),
                        shop_offers,
@@ -173,7 +155,7 @@ def FindProductsView(request):
         queryString = ''
         productList = Product.objects.all()
         context_objects = [productList, queryString]
-        
+
     if request.GET.get('cart'):
         itemid = int(request.GET.get('cart'))
         product_item = Product.objects.get(id=itemid)
@@ -182,7 +164,7 @@ def FindProductsView(request):
             cart.isCatalogItem = False
             cart.save()
         #handle already in cart case using "created"
-        
+
     context = dict(zip(context_object_names, context_objects))
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
