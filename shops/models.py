@@ -11,12 +11,24 @@ class Shop(models.Model):
     #Shop Details
     shop_name = models.CharField(max_length=128)
     shop_category = models.CharField(max_length=2,choices = MCM.SHOP_CATEGORY_CHOICES(), default = 'GS')
+
+    #Shop Address
     shop_latitude = models.FloatField(max_length=20, null = True)
     shop_longitude = models.FloatField(max_length=20, null = True)
     shop_contact_no = models.CharField(max_length=15, null = True) # TODO multiple nos
-    shop_email = models.EmailField(max_length=30, null = True) # TODO multiple emails
+    plot_num = models.IntegerField()
+    street = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=2)
+    zipcode = models.ForeignKey(Zipcode)
+
+    #Shop Info
     #shop_image_path = models.FilePathField(null = True) # TODO change to store paths only
     shop_info_text = models.CharField(max_length=2048, null = True)#TODO change to hold file
+    shop_facebookpage = models.CharField(max_length=100,null=True)
+    shop_email = models.EmailField(max_length=30, null = True) # TODO multiple emails
+
+
     #Shop Admin
     shop_admin = models.ForeignKey(User)
 
@@ -27,16 +39,6 @@ class Shop(models.Model):
 class Zipcode(models.Model):
     code = models.CharField(max_length=5)
     # poly = models.PolygonField()
-    # objects = models.GeoManager()
-
-
-class ShopAddress(models.Model):
-    shop = models.ForeignKey(Shop)
-    num = models.IntegerField()
-    street = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2)
-    zipcode = models.ForeignKey(Zipcode)
     # objects = models.GeoManager()
 
 

@@ -285,7 +285,7 @@ def CallControlView(request, shopid):
     call_admin = shop.shop_admin
     token = build_twilio_token('Admin')
 
-    return render_to_response("shops/control_call.html.html", {"token" : token,"client_name" : shop.shop_name,
+    return render_to_response("shops/control_call.html", {"token" : token,"client_name" : shop.shop_name,
         "pusher_key" : p_key}, context_instance=RequestContext(request))
 
 
