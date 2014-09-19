@@ -13,6 +13,7 @@ from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer, \
     ShoppingCart
 from shops.views import HomeView as ShopAdminHomeView
 from users.models import UserProfile
+from django.core.urlresolvers import reverse
 
 
 @login_required
@@ -31,7 +32,7 @@ def HomeView(request):
 
 
     else:
-        return HttpResponse("invalid group")
+        return HttpResponseRedirect(reverse('admin:index'))
 
 
 def ConsumerHomeView(request):
@@ -52,8 +53,8 @@ def ConsumerHomeView(request):
         count = 0
 
     if request.method == 'POST':
-        latitude = request.POST['latitude']
-        longitude = request.POST['longitude']
+        latitude = float(request.POST['latitude'])
+        longitude =float(request.POST['longitude'])
         user_location = (latitude, longitude)
         request.session["user_location"] = user_location
 
@@ -94,7 +95,6 @@ def NearbyShopsView(request):
     else:
         radius = 10 #km default
 
-    request.session["user_location"] = [12.9, 77.6]
     user_location = request.session["user_location"]
     shop_list = Shop.objects.all()
     shop_list = filter(lambda x: haversine(x.shop_latitude, x.shop_longitude, user_location[0], user_location[1]) <= radius, shop_list)

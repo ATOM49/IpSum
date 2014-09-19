@@ -47,7 +47,7 @@ def HomeView(request, shopid = None):
 
     context["shop"] = shop
     context["change_location"] = change_location
-    print shop.shop_latitude, shop.shop_longitude
+    #print shop.shop_latitude, shop.shop_longitude
     return render_to_response("shops/shop_home.html", context, context_instance=RequestContext(request))
 
 
