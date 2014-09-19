@@ -1,26 +1,27 @@
 from django import forms
-
 from products.models import Product
-from shops.models import Shop, Catalog, ShopOffer, ProductOffer
+from shops.models import Shop, Catalog, ShopOffer, ProductOffer, ShopAddress
 
 
 class ShopProfileForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('shop_name', 'shop_category', 'shop_address', 'shop_email')
+        fields = ('shop_name', 'shop_category', 'shop_email', 'shop_facebookpage')
+
 
 class ShopAdminCatalogForm(forms.ModelForm):
     class Meta:
         model = Catalog
         fields = ('product', 'price')
 
+
 class ShopAdminShopOfferForm(forms.ModelForm):
     class Meta:
         model = ShopOffer
         exclude = ('offer_shop',)
 
-class ShopAdminProductOfferForm(forms.ModelForm):
 
+class ShopAdminProductOfferForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.shop = kwargs.pop("shop")
         super(ShopAdminProductOfferForm, self).__init__(*args, **kwargs)
@@ -30,3 +31,9 @@ class ShopAdminProductOfferForm(forms.ModelForm):
     class Meta:
         model = ProductOffer
         exclude = ('offer_catalog_item',)
+
+
+class ShopAddressForm(forms.ModelForm):
+    class Meta:
+        meta = ShopAddress
+        fields = ('num','street','city','state','zipcode')

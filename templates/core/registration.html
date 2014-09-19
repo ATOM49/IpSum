@@ -18,6 +18,23 @@
 	  <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	  <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 	  <title>Registration</title>
+	  <script>
+		function loadXMLDoc(){
+			function send_pin() {
+				$.ajax({
+					url: "{% url 'ajax_send_pin' %}",
+					type: "POST",
+                    data: { mobile_number:  $("#mobile_number").val() }
+                })
+                .done(function(data) {
+                    alert("PIN sent via SMS!");
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown + ' : ' + jqXHR.responseText);
+                });
+    		}
+		}
+		</script>
 </head>
 
 
@@ -39,7 +56,10 @@
 				{{ user_form| crispy}}
 			<button class="btn btn-lg btn-success" type="submit" name="submit"><i class="glyphicon glyphicon-ok-sign"></i> Register</button>
 			</form>
-				{% if registered %} Thank you for registering! <a href="{% url 'core:login' %}">Login Here.	</a>{%endif%}
+			<input type="text" id="mobile_number" name="mobile_number" placeholder="+91**********" required>
+			<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+			{% if registered %} Thank you for registering! <a href="{% url 'core:login' %}">Login Here.	</a>{%endif%}
 		</div>
 	</div>
         <footer class"site-footer" id="footer">

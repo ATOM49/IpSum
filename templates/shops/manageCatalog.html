@@ -21,7 +21,7 @@
                 <td>{{ catalog_item.product.product_name }}</td>
                 <td>{{ catalog_item.price }}</td>
                 <td>{{ catalog_item.product.mrp }}</td>
-                <td><buttton onclick="window.location.href='{% url 'shops:managecatalog' shop.id %}?del={{ catalog_item.id }}'"> <i class="fa fa-times fa-1px"></i> </button></td>
+                <td> <buttton onclick="window.location.href='{% url 'shops:managecatalog' shop.id %}?del={{ catalog_item.id }}'"> <i class="fa fa-times fa-1px"></i> </button> </td>
             </tr>
         {% endfor %}
         </table>

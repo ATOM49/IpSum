@@ -34,8 +34,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = [
-'ipsum.example.com']
+ALLOWED_HOSTS = (
+    '127.0.0.1' 'monty.example.org')
 
 
 # Application definition
@@ -54,7 +54,8 @@ INSTALLED_APPS = (
     'core',
     'crispy_forms',
     'pagination',
-    'django_facebook',
+    'social_auth'
+    # 'django_facebook',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,7 +68,6 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
 )
 
-
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
@@ -77,12 +77,16 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    'django_facebook.context_processors.facebook',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
 )
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 ANONYMOUS_USER_ID = -1
 AUTHENTICATION_BACKENDS = (
-    'django_facebook.auth_backends.FacebookBackend',
+    'social_auth.backends.facebook.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
     # 'guardian.backends.ObjectPermissionBackend',
 )
@@ -97,7 +101,7 @@ WSGI_APPLICATION = 'IpSum.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 
-#sqlite3 config
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -105,9 +109,16 @@ DATABASES = {
     }
 }
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
+
 '''
 DATABASES = {
-    'default': {
+    'default': {S
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': "ipsum",
@@ -139,8 +150,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "/static/"
-LOGIN_URL = '/users/login/'
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+LOGIN_URL = '/core/login/'
+SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/core/register/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/users/home/'
+
 
 
 #Custom User Profile AUTH settings
@@ -149,8 +162,8 @@ FACEBOOK_AUTH_PROFILE_MODULE= 'users.FacebookProfile'
 
 #Facebook Initialzation
 FACEBOOK_APP_ID = '637419996372962'
-FACEBOOK_APP_SECRET = '7d56623819e89c6f5671f7b456f5d3f8'
-FACEBOOK_AUTH_USER_MODEL = 'django_facebook.models.FacebookProfileModel'
+FACEBOOK_API_SECRET = '7d56623819e89c6f5671f7b456f5d3f8'
+# FACEBOOK_AUTH_USER_MODEL = 'django_facebook.models.FacebookProfileModel'
 # FACEBOOK_AUTH_PROFILE_MODULE = 'django_facebook.FacebookProfile'
 FACEBOOK_DEFAULT_SCOPE = ['email', 'user_birthday', 'user_website', 'user_friends']
 FACEBOOK_STORE_LIKES = True

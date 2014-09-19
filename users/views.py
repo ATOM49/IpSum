@@ -1,10 +1,9 @@
 from datetime import datetime
-
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 
 from core.tools import haversine
@@ -14,6 +13,8 @@ from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer, \
 from shops.views import HomeView as ShopAdminHomeView
 from users.models import UserProfile
 from django.core.urlresolvers import reverse
+from twilio.util import TwilioCapability
+from core.twilio_call import build_twilio_token
 
 
 @login_required
@@ -115,7 +116,8 @@ def ShopView(request, shopid):
                             'product_offers',
                             'shop_visited',
                             'shop_liked',
-                            'loyalty_points')
+                            'loyalty_points',
+                            'token')
 
     shop = Shop.objects.get(id=shopid)
     user = request.user
@@ -152,18 +154,20 @@ def ShopView(request, shopid):
 
     print relation.visited, relation.user_like, relation.loyalty_points
 
+    token = build_twilio_token(user)
+
     context_objects = (shop,
                        shop.catalog_set.all(),
                        shop_offers,
                        product_offers,
                        relation.visited,
                        relation.user_like,
-                       relation.loyalty_points)
-    context = RequestContext(request, dict(zip(context_objects_name,context_objects)))
+                       relation.loyalty_points,
+                       token)
+    context = RequestContext(request, dict(zip(context_objects_name, context_objects)))
 
     template = loader.get_template(template_name)
     return HttpResponse(template.render(context))
-
 
 @login_required
 def FindProductsView(request):

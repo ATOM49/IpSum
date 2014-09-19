@@ -1,5 +1,5 @@
 {% extends 'user/user_core.html' %}
-<script src='//static.twilio.com/libs/twiliojs/1.1/twilio.min.js'></script>
+
 {%block title%} {{shop.shop_name}} {%endblock%}
 {% load pagination_tags %}
 {% block central_block %}
@@ -7,9 +7,7 @@
 <div class="container-fluid" id="shop_view">
   <div class = "row">
     <div class ="col-sm-3 col-xs-3">
-
     <!--Side Bar-->
-
       <!--Profile details-->
       <div class="container-fluid" id="side_top">
         <div class="panel panel-default">
@@ -23,7 +21,6 @@
             </div>
           </div>
       </div>
-
       <!--Like Buttons-->
       <div class="container-fluid" id="side_top">
         <div class="panel panel-default">
@@ -66,55 +63,14 @@
           </div>
       </div>
     </div>
-
-    <!--Calling Panel-->
-    <div class="col-sm-6 col-xs-6">
-    <div class="container-fluid">
-        <div class="panel-default">
-            <div class="panel-body">
-                Call {{ shop.shop_name }}
-                <a onClick="call({{ shop.shop_name }});"></a><i class="fa fa-phone-square fa-4x"></i></a>
-            </div>
-        </div>
-    </div>
-
     <!--Main content-->
+    <div class="col-sm-6 col-xs-6">
       <div class="container-fluid" >
         <ul class="nav nav-tabs nav-justified" role="tablist" id="shop_tab">
-          <li><a href="#Location">Location</a><li>
           <li><a href="#Offers">Offers</a></li>
           <li><a href="#Catalog">Catalog</a><li>
-
         </ul>
       <div id="shop-tab-content" class="tab-content">
-        <div class="tab-pane active" id="Location">
-        <script
-            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
-            </script>
-
-            <script>
-                function initialize() {
-                  var mapOptions = {
-                    zoom: 14,
-                    center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
-                  };
-
-                  var map = new google.maps.Map(document.getElementById('googleMap'),
-                      mapOptions);
-
-                  var marker = new google.maps.Marker({
-                    position: map.getCenter(),
-                    map: map,
-                    title: '{{ shop.shop_name }}'
-                  });
-
-                }
-
-                google.maps.event.addDomListener(window, 'load', initialize);
-                </script>
-
-            <div id="googleMap" style="width:500px;height:380px;"></div>
-        </div>
         <div class="tab-pane active" id="Offers">
           <!--Shop Offers Table-->
             <div class="container-fluid" id="shop_offers_table">
@@ -222,21 +178,6 @@
     </div>
   </div>
   </div>
+</div>
 
-    #javascript to open the twilio device
-    <script type="text/javascript">
-
-      Twilio.Device.setup("{{ token }}");
-
-      function call(shop) {
-        params = {"shop": shop, "name": '{{client_name}}'};
-        Twilio.Device.connect(params);
-      }
-
-      function hangup() {
-        Twilio.Device.disconnectAll();
-      }
-
-      console.log('{{client_name}}');
-    </script>
 {%endblock%}
