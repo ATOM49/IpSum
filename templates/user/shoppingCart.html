@@ -22,26 +22,5 @@
         There are no items in your cart currently.
     {% endif %}
 </div>
+
 {% endblock %}
-
-
-
-{% if shopping_cart %}
-
-    <table>
-        <tr>
-            <th> Product Name </th>
-            <th> Product Price </th>
-            <th> Shop Name </th>
-        </tr>
-        {% for item in shopping_cart %}
-            <tr>
-              <td>{{ item.product }}</td>
-              <td>{{ item.product.mrp }}</td>
-              <td>{% if item.shop %} {{ item.shop }} {% else %} n/a {% endif %}</td>
-            </tr>
-          {% endfor %}
-    </table>
-{% else %}
-    There are no items in your cart currently.
-{% endif %}

@@ -5,39 +5,27 @@ from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+
+from core.tools import haversine
 from products.models import Product
-from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer,\
+from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer, \
     ShoppingCart
-from users.models import UserProfile
 from shops.views import HomeView as ShopAdminHomeView
+from users.models import UserProfile
+from django.core.urlresolvers import reverse
 from twilio.util import TwilioCapability
 from core.twilio_call import build_twilio_token
 
 
 @login_required
-def HomeView(request,shopid=None):
-    home=True
+def HomeView(request):
 #Consumer Home
     if request.user.groups.filter(name='consumer'):
-        visits = int(request.COOKIES.get('visits', '0'))
-        if request.session.get('last_visit'):
-            last_visit_time = request.session.get('last_visit')
-            visits = request.session.get('visits', 0)
-            if (datetime.now() - datetime.strptime(last_visit_time[:-7], "%Y-%m-%d %H:%M:%S")).seconds > 7:
-                request.session['visits'] = visits + 1
-                request.session['last_visit'] = str(datetime.now())
-        else:
-            request.session['last_visit'] = str(datetime.now())
-            request.session['visits'] = 1
-        if request.session.get('visits'):
-                count = request.session.get('visits')
-        else:
-            count = 0
-        return render_to_response("user/home.html", {'visits':count,'home':home}, context_instance=RequestContext(request))
+        return ConsumerHomeView(request)
 
 #Shop_Admin View
     elif request.user.groups.filter(name='shopadmin'):
-        return ShopAdminHomeView(request, shopid)
+        return ShopAdminHomeView(request)
 
 
     elif request.user.groups.filter(name='admin'):
@@ -45,8 +33,41 @@ def HomeView(request,shopid=None):
 
 
     else:
-        return HttpResponse("invalid group")
+        return HttpResponseRedirect(reverse('admin:index'))
 
+
+def ConsumerHomeView(request):
+    home=True
+    visits = int(request.COOKIES.get('visits', '0'))
+    if request.session.get('last_visit'):
+        last_visit_time = request.session.get('last_visit')
+        visits = request.session.get('visits', 0)
+        if (datetime.now() - datetime.strptime(last_visit_time[:-7], "%Y-%m-%d %H:%M:%S")).seconds > 7:
+            request.session['visits'] = visits + 1
+            request.session['last_visit'] = str(datetime.now())
+    else:
+        request.session['last_visit'] = str(datetime.now())
+        request.session['visits'] = 1
+    if request.session.get('visits'):
+            count = request.session.get('visits')
+    else:
+        count = 0
+
+    if request.method == 'POST':
+        latitude = float(request.POST['latitude'])
+        longitude =float(request.POST['longitude'])
+        user_location = (latitude, longitude)
+        request.session["user_location"] = user_location
+
+    try:
+        print request.session["user_location"]
+        request.session["user_location"]
+        get_location = False
+    except:
+        print "no location"
+        get_location = True
+
+    return render_to_response("user/home.html", {'visits':count,'home':home, 'get_location' : get_location}, context_instance=RequestContext(request))
 
 @login_required
 def FindShopsView(request):
@@ -62,6 +83,29 @@ def FindShopsView(request):
         context_objects = [shopList, queryString]
     context = dict(zip(context_object_names, context_objects))
     return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+
+def NearbyShopsView(request):
+    template_name = 'user/nearbyShops.html'
+    context_objects_name = ('radius',
+                            'shop_list',
+                            'user_location',
+                            )
+    if request.GET.get('radius'):
+        radius = float(request.GET.get('radius'))
+    else:
+        radius = 10 #km default
+
+    user_location = request.session["user_location"]
+    shop_list = Shop.objects.all()
+    shop_list = filter(lambda x: haversine(x.shop_latitude, x.shop_longitude, user_location[0], user_location[1]) <= radius, shop_list)
+    shop_list.sort(key=lambda x: haversine(x.shop_latitude, x.shop_longitude, user_location[0], user_location[1]))
+
+    context_objects = [radius, shop_list, user_location]
+    #print radius
+    context = dict(zip(context_objects_name, context_objects))
+    return render_to_response(template_name, context, context_instance=RequestContext(request))
+
 
 @login_required
 def ShopView(request, shopid):

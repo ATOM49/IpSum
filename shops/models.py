@@ -53,7 +53,7 @@ class Catalog(models.Model):
     price = models.IntegerField(null = True)
 
     def __str__(self):
-        return self.product
+        return str(self.product)
 
 
 class ProductOffer(models.Model):

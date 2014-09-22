@@ -11,13 +11,13 @@
               <table class="table table-hover" id="site_offer_table">
               <tr>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
               </tr>
               {% for offer in SiteOffers %}
                 <tr>
                   <td>  </td>
-                  <td>  </td>   
+                  <td>  </td>
                   <td>  </td>
                 </tr>
               {% endfor %}
@@ -31,16 +31,16 @@
               <table class="table table-hover" id="shop_offer_table">
               <tr>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
                 <th> Offer Shop </th>
               </tr>
               {% for offer in ShopOffers %}
                 <tr>
-                  <td> {{ offer.0.offer_name }} </td>    
-                  <td> {{  offer.0.offer_info }} </td>
-                  <td> {{  offer.0.points_needed }} </td>   
-                  <td> {{  offer.0.offer_shop }} </td>
+                  <td> {{ offer.offer_name }} </td>
+                  <td> {{  offer.offer_info }} </td>
+                  <td> {{  offer.points_needed }} </td>
+                  <td> {{  offer.offer_shop }} </td>
                 </tr>
               {% endfor %}
               </table>
@@ -54,15 +54,15 @@
               <tr>
                 <th> Product Name </th>
                 <th> Offer Name </th>
-                <th> Offer Details </th>    
+                <th> Offer Details </th>
                 <th> Points Needed </th>
               </tr>
               {% for offer in ProductOffers %}
               <tr>
-                <td> {{ offer.0.offer_catalog_item.product }} </td>
-                <td> {{ offer.0.offer_name }} </td>
-                <td> {{ offer.0.offer_info }} </td>   
-                <td> {{ offer.0.points_needed }} </td>
+                <td> {{ offer.offer_catalog_item.product }} </td>
+                <td> {{ offer.offer_name }} </td>
+                <td> {{ offer.offer_info }} </td>
+                <td> {{ offer.points_needed }} </td>
               </tr>
               {% endfor %}
               </table>

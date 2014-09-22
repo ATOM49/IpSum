@@ -1,47 +1,58 @@
 {%extends 'shops/shop_base.html' %}
 
+
+
 {% block body_block %}
-<script
-src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
-</script>
 
-<script>
-function initialize() {
-  var mapOptions = {
-    zoom: 18,
-    center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
-  };
+{% if shop %}
+    <script
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+    </script>
 
-  var map = new google.maps.Map(document.getElementById('googleMap'),
-      mapOptions);
+    <script>
+        function initialize() {
+          var mapOptions = {
+            zoom: 18,
+            center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
+          };
 
-  var marker = new google.maps.Marker({
-    position: map.getCenter(),
-    map: map,
-    {% if change_location %}draggable: true,{% endif %}
-    title: '{{ shop.shop_name }}'
-  });
-}
+          var map = new google.maps.Map(document.getElementById('googleMap'),
+              mapOptions);
 
-function enableEditing(){
-    window.location = "{% url users:home shop.id %?edit=1}"
-}
-function saveLocation(){
-    window.location = "{% url users:home shop.id %?save=" + marker.getPosition()
-}
+          var marker = new google.maps.Marker({
+            position: map.getCenter(),
+            map: map,
+            {% if change_location %}draggable: true,{% endif %}
+            title: '{{ shop.shop_name }}'
+          });
 
-google.maps.event.addDomListener(window, 'load', initialize);
-</script>
+          {% if change_location %}
+            var shop_lat = document.getElementById('shop_lat')
+            var shop_lng = document.getElementById('shop_lng')
+            shop_lat.value = marker.getPosition().lat()
+            shop_lng.value = marker.getPosition().lng()
+            google.maps.event.addListener(marker, 'dragend', function() {
+                shop_lat.value = marker.getPosition().lat()
+                shop_lng.value = marker.getPosition().lng()
+            } );
+          {% endif %}
+        }
 
-<div id="googleMap" style="width:500px;height:380px;"></div>
-    <input type="text" id = "location", hidden = true/>
-{% if change_location %}
-    <button type="submit" onclick="saveLocation()" class="btn btn-md btn-primary" id="save" >Save My Location</button>
-{% else %}
-    <button type="submit" onclick="enableEditing()" class="btn btn-md btn-primary" id="update" >Update My Location</button>
+        google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+    <form id="location_update_form" method="post" action="{% url 'shops:home' %}{{shop.id}}/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name = "latitude" id = "shop_lat" hidden = True>
+    <input type="text" name = "longitude" id = "shop_lng" hidden = True>
+    {% if change_location %}
+        <button type="submit"  class="btn btn-md btn-primary" name="save" >Save My New Location</button>
+    {% else %}
+        <button type="submit"  class="btn btn-md btn-primary" name="update" >Update My Location</button>
+    {% endif %}
+    </form>
 {% endif %}
-
-
 
 
 {% endblock %}
