@@ -1,12 +1,21 @@
 from django import forms
 from products.models import Product
-from shops.models import Shop, Catalog, ShopOffer, ProductOffer, ShopAddress
+from shops.models import Shop, Catalog, ShopOffer, ProductOffer
 
 
 class ShopProfileForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('shop_name', 'shop_category', 'shop_email', 'shop_facebookpage')
+        fields = ('shop_name',
+                  'shop_category',
+                  'shop_email',
+                  'shop_facebookpage',
+                  'plot_num',
+                  'street',
+                  'city',
+                  'state',
+                  'zipcode',
+                )
 
 
 class ShopAdminCatalogForm(forms.ModelForm):
@@ -33,7 +42,7 @@ class ShopAdminProductOfferForm(forms.ModelForm):
         exclude = ('offer_catalog_item',)
 
 
-class ShopAddressForm(forms.ModelForm):
-    class Meta:
-        meta = ShopAddress
-        fields = ('num','street','city','state','zipcode')
+# class ShopAddressForm(forms.ModelForm):
+#     class Meta:
+#         meta = ShopAddress
+#         fields = ('num','street','city','state','zipcode')

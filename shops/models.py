@@ -7,6 +7,11 @@ from core import modelFieldChoicesManager as MCM
 # Create your models here.
 
 
+class Zipcode(models.Model):
+    code = models.IntegerField(max_length=6)
+    # poly = models.PolygonField()
+    # objects = models.GeoManager()
+
 class Shop(models.Model):
     #Shop Details
     shop_name = models.CharField(max_length=128)
@@ -22,6 +27,7 @@ class Shop(models.Model):
     state = models.CharField(max_length=2)
     zipcode = models.ForeignKey(Zipcode)
 
+
     #Shop Info
     #shop_image_path = models.FilePathField(null = True) # TODO change to store paths only
     shop_info_text = models.CharField(max_length=2048, null = True)#TODO change to hold file
@@ -35,11 +41,9 @@ class Shop(models.Model):
     def __str__(self):
         return self.shop_name
 
-
-class Zipcode(models.Model):
-    code = models.CharField(max_length=5)
-    # poly = models.PolygonField()
-    # objects = models.GeoManager()
+    def get_address(self):
+        shop_address = self.plot_num +", /n"+ self.street + self.city+", /n" + self.state+", /n" + str(self.zipcode)
+        return shop_address
 
 
 class Catalog(models.Model):

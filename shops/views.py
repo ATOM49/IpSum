@@ -276,16 +276,16 @@ def ManageShopsView(request):
     return render_to_response("shops/manageShops.html", context, context_instance=RequestContext(request))
 
 p_app_id='89743'
-p_key='fc3f7ce5a53bc331ec26'
 p_secret='ce2ddcccec20e0ecd5a3'
 
 @login_required
 def CallControlView(request, shopid):
+    p_key='fc3f7ce5a53bc331ec26'
     shop = Shop.objects.get(id=shopid)
     call_admin = shop.shop_admin
-    token = build_twilio_token('Admin')
+    token = build_twilio_token('call_admin')
 
-    return render_to_response("shops/control_call.html", {"token" : token,"client_name" : shop.shop_name,
+    return render_to_response("shops/control_call.html", {"token" : token,"client_name" : call_admin,
         "pusher_key" : p_key}, context_instance=RequestContext(request))
 
 
