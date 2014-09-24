@@ -7,7 +7,7 @@
             enctype="multipart/form-data">
         {% csrf_token %}
         {{ shop_form| crispy }}
-        <input type="submit" name="submit" value="Add This Shop" />
+        <input class="btn btn-lg btn-success" type="submit" name="submit" value="Add This Shop" />
     </form>
 {% endif %}
 

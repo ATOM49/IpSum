@@ -7,11 +7,6 @@ from core import modelFieldChoicesManager as MCM
 # Create your models here.
 
 
-class Zipcode(models.Model):
-    code = models.IntegerField(max_length=6)
-    # poly = models.PolygonField()
-    # objects = models.GeoManager()
-
 class Shop(models.Model):
     #Shop Details
     shop_name = models.CharField(max_length=128)
@@ -25,7 +20,7 @@ class Shop(models.Model):
     street = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2)
-    zipcode = models.ForeignKey(Zipcode)
+    zipcode = models.IntegerField(max_length=6)
 
 
     #Shop Info
@@ -42,7 +37,7 @@ class Shop(models.Model):
         return self.shop_name
 
     def get_address(self):
-        shop_address = self.plot_num +", /n"+ self.street + self.city+", /n" + self.state+", /n" + str(self.zipcode)
+        shop_address = str(self.plot_num) +", /n" + self.street + self.city+", /n" + self.state+", /n" + str(self.zipcode)
         return shop_address
 
 
@@ -62,6 +57,11 @@ class ProductOffer(models.Model):
     points_needed = models.IntegerField(default = 0)#TODO make this flexible
     offer_catalog_item = models.ForeignKey(Catalog, null = True)
     is_eligible = False
+    time_created = models.DateTimeField(auto_now=True)
+    date_from = models.DateField()
+    date_to = models.DateField()
+    new_offer = models.BooleanField(default=False)
+    active_offer = models.BooleanField(default=True)
 
     def eligibilityCheck(self, user, shop):
         relation, created = ShopUserRelation.objects.get_or_create(user_id=user.id, shop_id=shop.id)
@@ -72,6 +72,16 @@ class ProductOffer(models.Model):
             self.is_eligible = True
     def __str__(self):
         return self.offer_name
+
+    def new(self, last_visit):
+        if self.time_created - last_visit >0:
+            self.new_offer = True
+        return self.new_offer
+
+    def active(self):
+        now = models.DateField(auto_now=True)
+        if not(self.date_from <= now <= self.date_to):
+            self.active_offer = False
 
 
 class ShopUserRelation(models.Model):
@@ -98,6 +108,11 @@ class ShopOffer(models.Model):
     offer_category = models.CharField(max_length=5 ,choices = MCM.PRODUCT_CATEGORY_CHOICES())
     offer_shop = models.ForeignKey(Shop, null = True)
     is_eligible = False
+    time_created = models.DateTimeField(auto_now=True)
+    date_from = models.DateField()
+    date_to = models.DateField()
+    new_offer = models.BooleanField(default=False)
+    active_offer = models.BooleanField(default=True)
 
     def eligibilityCheck(self, user):
         relation, created = ShopUserRelation.objects.get_or_create(user_id=user.id, shop_id=self.offer_shop.id)
@@ -109,6 +124,16 @@ class ShopOffer(models.Model):
 
     def __str__(self):
         return self.offer_name
+
+    def new(self, last_visit):
+        if self.time_created - last_visit > 0:
+            self.new_offer = True
+        return self.new_offer
+
+    def active(self):
+        now = models.DateField(auto_now=True)
+        if not(self.date_from <= now <= self.date_to):
+            self.active_offer = False
 
 
 class ProductUserRelation(models.Model):

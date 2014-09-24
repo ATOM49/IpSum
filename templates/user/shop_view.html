@@ -1,15 +1,14 @@
 {% extends 'user/user_core.html' %}
+{% load pagination_tags %}
 <script src='//static.twilio.com/libs/twiliojs/1.1/twilio.min.js'></script>
 {%block title%} {{shop.shop_name}} {%endblock%}
-{% load pagination_tags %}
-{% block central_block %}
 
+
+{% block central_block %}
 <div class="container-fluid" id="shop_view">
   <div class = "row">
     <div class ="col-sm-3 col-xs-3">
-
     <!--Side Bar-->
-
       <!--Profile details-->
       <div class="container-fluid" id="side_top">
         <div class="panel panel-default">
@@ -18,12 +17,11 @@
             </div>
             <div class="panel-body" id="shop_view_details">
               <strong id="username"><p>{{shop.shop_name}}</p></strong>
-              <i class="fa fa-envelope" fa="1px"></i>{{shop.shop_email}}<br><br>
+              <i class="fa fa-envelope fa-1px"></i>{{shop.shop_email}}<br><br>
               <i class="fa fa-map-marker"></i> {{shop.shop_address}}
             </div>
           </div>
       </div>
-
       <!--Like Buttons-->
       <div class="container-fluid" id="side_top">
         <div class="panel panel-default">
@@ -53,9 +51,31 @@
             }(document, 'script', 'facebook-jssdk'));
             </script>
           <div class="fb-like" data-href={{shop.facebook_page}} data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+        {% endif %}
         </div>
       </div>
-        {% endif %}
+
+    <!--Calling Panel-->
+    <div class="container-fluid">
+            <div class="panel-default">
+                <div class="panel-body">
+                    <strong>Call {{ shop.shop_name }}</strong>
+                    <a onClick="(call({{ shop.shop_name }}));"><i class="fa fa-phone-square fa-4x pull-right"></i></a>
+                        <script type="text/javascript">
+                            Twilio.Device.setup("{{ token }}");
+                            function call(shop) {
+                                params = {"shop": shop, "name": '{{client_name}}'};
+
+                                Twilio.Device.connect(params);
+                                }
+                            function hangup() {
+                                Twilio.Device.disconnectAll();
+                                }
+                            console.log('{{client_name}}');
+                        </script>
+                </div>
+            </div>
+        </div>
       <!--Social Media-->
       <div class="container-fluid" id="social_media">
           <div class="panel panel-default">
@@ -67,176 +87,150 @@
       </div>
     </div>
 
-    <!--Calling Panel-->
+
     <div class="col-sm-6 col-xs-6">
-    <div class="container-fluid">
-        <div class="panel-default">
-            <div class="panel-body">
-                Call {{ shop.shop_name }}
-                <a onClick="call({{ shop.shop_name }});"></a><i class="fa fa-phone-square fa-4x"></i></a>
+        <div class="container-fluid" >
+            <ul class="nav nav-tabs nav-justified" role="tablist" id="shop_tab">
+                <li><a href="#Location">Location</a></li>
+                <li><a href="#Offers">Offers</a></li>
+                <li><a href="#Catalog">Catalog</a><li>
+
+            </ul>
+            <div id="shop-tab-content" class="tab-content">
+                <div class="tab-pane active" id="Location">
+                    <script
+                            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+                    </script>
+
+                    <script>
+                        function initialize() {
+                            var mapOptions = {
+                                zoom: 14,
+                                center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
+                            };
+
+                            var map = new google.maps.Map(document.getElementById('googleMap'),
+                                    mapOptions);
+
+                            var marker = new google.maps.Marker({
+                                position: map.getCenter(),
+                                map: map,
+                                title: '{{ shop.shop_name }}'
+                            });
+
+                        }
+
+                        google.maps.event.addDomListener(window, 'load', initialize);
+                    </script>
+
+                    <div id="googleMap" style="width:500px;height:380px;"></div>
+                </div>
+                <div class="tab-pane" id="Offers">
+                    <!--Shop Offers Table-->
+                    <div class="container-fluid" id="shop_offers_table">
+                        <br>
+                        <h2>The following offers are available!</h2>
+
+                        <h3>Shop Offers</h3>
+                        {% if shop_offers %}
+                            <table class="table table-hover" id="shop_offer_table">
+                                <tr>
+                                    <th> Offer Name </th>
+                                    <th> Offer Details </th>
+                                    <th> Points Needed </th>
+                                    <th> Offer Category </th>
+                                    <th> Eligibility </th>
+                                </tr>
+                                {% for offer in shop_offers %}
+                                    <tr>
+                                        <td> {{ offer.offer_name }} </td>
+                                        <td> {{  offer.offer_info }} </td>
+                                        <td> {{  offer.points_needed }} </td>
+                                        <td> {{  offer.offer_category }} </td>
+                                        <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No offers in this category!
+                        {% endif %}
+
+                        <h3>Product Offers</h3>
+                        {% if product_offers %}
+                            <table class="table table-hover" id="product_offer_table">
+                                <tr>
+                                    <th> Product Name </th>
+                                    <th> Offer Name </th>
+                                    <th> Offer Details </th>
+                                    <th> Points Needed </th>
+                                    <th> Eligibility </th>
+                                </tr>
+                                {% for offer in product_offers %}
+                                    <tr>
+                                        <td> {{ offer.offer_catalog_item.product }} </td>
+                                        <td> {{ offer.offer_name }} </td>
+                                        <td> {{ offer.offer_info }} </td>
+                                        <td> {{ offer.points_needed }} </td>
+                                        <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No offers in this category!
+                        {% endif %}
+                        </ul>
+                        <hr>
+                    </div>
+                </div>
+                <div class="tab-pane" id="Catalog">
+                    {% autopaginate shop_catalog 4 %}
+                    {% if shop_catalog %}
+                        <div class="col-sm-12" id="catalog_ext">
+                            {% for item in shop_catalog %}
+                                <ul>
+                                    {#<a href="{% url 'shops:shopcatalog' shop.id %}">#}
+                                    <div class="col-sm-6" id="catalog_int">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="http://placehold.it/350x260" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row">
+                                                    <div class="price col-md-6">
+                                                        <p>{{item.product}}</p>
+                                                        <h5 class="price-text-color">
+                                                            <p>&#x20b9; {{item.price}}</p> </h5>
+                                                    </div>
+                                                    <div class="rating hidden-sm col-md-6">
+                                                        <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="fa fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="separator clear-left">
+                                                    <p class="btn-add">
+                                                        <i class="fa fa-shopping-cart"></i><a href="{% url 'users:shopview' shop.id %}?cart={{ item.id }}" class="hidden-sm">Add to list</a></p>
+                                                    <p class="btn-details">
+                                                        <i class="fa fa-list"></i><a href="#" class="hidden-sm">Product details</a></p>
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {#</a>#}
+                                </ul>
+                            {% endfor %}
+                            {% paginate %}
+                        </div>
+                    {% else %}
+                        <p>No items in this shop.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-
     <!--Main content-->
-      <div class="container-fluid" >
-        <ul class="nav nav-tabs nav-justified" role="tablist" id="shop_tab">
-          <li><a href="#Location">Location</a><li>
-          <li><a href="#Offers">Offers</a></li>
-          <li><a href="#Catalog">Catalog</a><li>
-
-        </ul>
-      <div id="shop-tab-content" class="tab-content">
-        <div class="tab-pane active" id="Location">
-        <script
-            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
-            </script>
-
-            <script>
-                function initialize() {
-                  var mapOptions = {
-                    zoom: 14,
-                    center: new google.maps.LatLng({{ shop.shop_latitude }}, {{ shop.shop_longitude }})
-                  };
-
-                  var map = new google.maps.Map(document.getElementById('googleMap'),
-                      mapOptions);
-
-                  var marker = new google.maps.Marker({
-                    position: map.getCenter(),
-                    map: map,
-                    title: '{{ shop.shop_name }}'
-                  });
-
-                }
-
-                google.maps.event.addDomListener(window, 'load', initialize);
-                </script>
-
-            <div id="googleMap" style="width:500px;height:380px;"></div>
-        </div>
-        <div class="tab-pane active" id="Offers">
-          <!--Shop Offers Table-->
-            <div class="container-fluid" id="shop_offers_table">
-            <br>
-            <h2>The following offers are available!</h2>
-
-            <h3>Shop Offers</h3>
-            {% if shop_offers %}
-              <table class="table table-hover" id="shop_offer_table">
-              <tr>
-                <th> Offer Name </th>
-                <th> Offer Details </th>
-                <th> Points Needed </th>
-                <th> Offer Category </th>
-                <th> Eligibility </th>
-              </tr>
-              {% for offer in shop_offers %}
-                <tr>
-                  <td> {{ offer.offer_name }} </td>
-                  <td> {{  offer.offer_info }} </td>
-                  <td> {{  offer.points_needed }} </td>
-                  <td> {{  offer.offer_category }} </td>
-                  <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
-                </tr>
-              {% endfor %}
-              </table>
-            {% else %}
-              No offers in this category!
-            {% endif %}
-
-            <h3>Product Offers</h3>
-            {% if product_offers %}
-              <table class="table table-hover" id="product_offer_table">
-              <tr>
-                <th> Product Name </th>
-                <th> Offer Name </th>
-                <th> Offer Details </th>
-                <th> Points Needed </th>
-                <th> Eligibility </th>
-              </tr>
-              {% for offer in product_offers %}
-              <tr>
-                <td> {{ offer.offer_catalog_item.product }} </td>
-                <td> {{ offer.offer_name }} </td>
-                <td> {{ offer.offer_info }} </td>
-                <td> {{ offer.points_needed }} </td>
-                <td> {% if offer.is_eligible %} Yes {% else %} No {% endif %} </td>
-              </tr>
-              {% endfor %}
-              </table>
-            {% else %}
-            No offers in this category!
-            {% endif %}
-              </ul>
-              <hr>
-          </div>
-        </div>
-        <div class="tab-pane" id="Catalog">
-            {% autopaginate shop_catalog 4 %}
-            {% if shop_catalog %}
-              <div class="col-sm-12" id="catalog_ext">
-                {% for item in shop_catalog %}
-                <ul>
-                  {#<a href="{% url 'shops:shopcatalog' shop.id %}">#}
-                      <div class="col-sm-6" id="catalog_int">
-                        <div class="col-item">
-                            <div class="photo">
-                                <img src="http://placehold.it/350x260" class="img-responsive" alt="a" />
-                            </div>
-                            <div class="info">
-                                <div class="row">
-                                    <div class="price col-md-6">
-                                        <p>{{item.product}}</p>
-                                        <h5 class="price-text-color">
-                                            <p>&#x20b9; {{item.price}}</p> </h5>
-                                    </div>
-                                    <div class="rating hidden-sm col-md-6">
-                                        <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                        </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                        </i><i class="fa fa-star"></i>
-                                    </div>
-                                </div>
-                                <div class="separator clear-left">
-                                    <p class="btn-add">
-                                        <i class="fa fa-shopping-cart"></i><a href="{% url 'users:shopview' shop.id %}?cart={{ item.id }}" class="hidden-sm">Add to list</a></p>
-                                    <p class="btn-details">
-                                        <i class="fa fa-list"></i><a href="#" class="hidden-sm">Product details</a></p>
-                                </div>
-                                <div class="clearfix">
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                    {#</a>#}
-                </ul>
-                  {% endfor %}
-                  {% paginate %}
-                </div>
-              {% else %}
-                <p>No items in this shop.</p>
-              {% endif %}
-        </div>
-      </div>
-      </div>
-    </div>
   </div>
   </div>
-
-    #javascript to open the twilio device
-    <script type="text/javascript">
-
-      Twilio.Device.setup("{{ token }}");
-
-      function call(shop) {
-        params = {"shop": shop, "name": '{{client_name}}'};
-        Twilio.Device.connect(params);
-      }
-
-      function hangup() {
-        Twilio.Device.disconnectAll();
-      }
-
-      console.log('{{client_name}}');
-    </script>
 {%endblock%}

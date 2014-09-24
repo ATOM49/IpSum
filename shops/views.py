@@ -242,7 +242,6 @@ def ManageOffersView(request, shopid):
 
 @login_required
 def ManageShopsView(request):
-    print "manage shops view"
     if not request.user.groups.filter(name='shopadmin'):
         return HttpResponse("invalid group")
     context = {}

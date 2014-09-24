@@ -235,7 +235,21 @@ def OfferView(request):
                 ProductOffers.append(offer)
     context["ProductOffers"] = ProductOffers
 
-    return render_to_response("user/offers.html",context,context_instance=RequestContext(request))
+    response = render_to_response("user/offers.html", context, context_instance=RequestContext(request))
+
+    visits = int(request.COOKIES.get('visits', '0'))
+
+    if 'last_visit' in request.COOKIES:
+        last_visit = request.COOKIES['last_visit']
+        last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+        if (datetime.now() - last_visit_time).days > 0:
+            response.set_cookie('visits', visits+1)
+            response.set_cookie('last_visit', datetime.now())
+    else:
+        response.set_cookie('last_visit', datetime.now())
+
+    return response
 
 
 @login_required
