@@ -1,5 +1,7 @@
-pip
-Django 1.6.5
-django-pagination
-django-crispy-forms
-django-social-auth
+Python==2.7.3
+pip==1.4.1
+Django==1.6.5
+django-pagination==1.0.7
+django-crispy-forms==1.4.0
+django-social-auth==0.7.28
+twilio==3.6.7
