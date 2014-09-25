@@ -1,0 +1,5 @@
+pip
+Django 1.6.5
+django-pagination
+django-crispy-forms
+django-social-auth
