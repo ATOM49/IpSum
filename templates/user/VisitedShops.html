@@ -1,0 +1,49 @@
+{% extends 'user/user_base.html' %}
+{% load pagination_tags %}
+
+{% block body_block %}
+{% if visited_shops %}
+{% autopaginate shop_list 4 %}
+        {% for visited_shop in visited_shops %}
+        <div class="container" id="shop_snippet">
+        <div class="row">
+            <div class="col-xs-8 col-sm-6 col-md-6">
+                <div class="well well-sm" >
+                    <div class="row">
+                        <div class="col-sm-8 col-md-6">
+                            <img src="http://webbydzine.com/wp-content/uploads/2012/07/psd-small-store-icon_main.jpg" alt="" class="img-rounded img-responsive" />
+                        </div>
+                        <div class="col-sm-4 col-md-6">
+                            <h4><a href="{% url 'users:shopview' shop.id %}">  {{visited_shop.shop}}</a></h4>
+                            <br>
+                            <i class="glyphicon glyphicon-map-marker"></i>  {{visited_shop.shop_address}}
+                            <br>
+                            <i class="glyphicon glyphicon-envelope"></i>  {{visited_shop.shop_email}}
+                            <br>
+                            <i class="glyphicon glyphicon-phone-alt"></i>  {{visited_shop.shop_contact_no}}
+                            <br>
+                            <i class="fa fa-clock-o fa-1x"></i>  {{visited_shop.joined_date}}
+                            <br>
+                            <!-- Split button -->
+                            <div class="btn-group">
+                                <button onclick="location.href = '{% url 'users:shopview' shop.id %}';" id="myButton" class="btn btn-primary">View</button>
+                                <button data-catid="{{category.id}}" id="shop_like" class="btn btn-primary">Like</button><b id="like_count">{{ visited_shops.shop.likes }}</b>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span><span class="sr-only">View</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Review</a></li>
+                                    <li><a href="#">Report</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+{% else %}
+    You have not Visited any shops.
+{% endif %}
+{% endblock %}

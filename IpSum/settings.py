@@ -17,11 +17,11 @@ SETTINGS_DIR = os.path.dirname(__file__)
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 TEMPLATE_DIRS = os.path.join(BASE_DIR, "templates")
-STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
-
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -35,7 +35,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = (
-    '127.0.0.1' 'monty.example.org')
+    '127.0.0.1' 'atom49.pythonanywhere.com')
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'localflavor',
     'south',
     'shops',
     'products',
@@ -91,6 +92,7 @@ AUTHENTICATION_BACKENDS = (
     # 'guardian.backends.ObjectPermissionBackend',
 )
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 ROOT_URLCONF = 'IpSum.urls'
 
@@ -115,7 +117,7 @@ DATABASES = {
 #         'LOCATION': '127.0.0.1:11211',
 #     }
 # }
-
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 '''
 DATABASES = {
     'default': {S
@@ -149,11 +151,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "/static/"
 LOGIN_URL = '/core/login/'
 SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/core/register/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/users/home/'
-
+MEDIA_URL = '/media/'
 
 
 #Custom User Profile AUTH settings
@@ -168,3 +169,8 @@ FACEBOOK_API_SECRET = '7d56623819e89c6f5671f7b456f5d3f8'
 FACEBOOK_DEFAULT_SCOPE = ['email', 'user_birthday', 'user_website', 'user_friends']
 FACEBOOK_STORE_LIKES = True
 FACEBOOK_STORE_FRIENDS = True
+
+#Twilio details
+TWILIO_ACCOUNT_SID = "AC9dbcad82b20275e6e1854351444f13c3"
+TWILIO_AUTH_TOKEN = "d5eb94487e911314e5620b4ea18e6d74"
+TWILIO_FROM_NUMBER = "(717) 833-6007"
