@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^offers/(?P<shopid>\d+)/', views.ManageOffersView, name='manageoffers'),
     url(r'^manageshops/', views.ManageShopsView, name='manageshops'),
     url(r'^logout/$', core_views.LogoutView, name='logout'),
-    url(r'^calls/$', views.CallControlView, name='call_control'),
+    url(r'^calls/(?P<shopid>\d+)/', views.CallControlView, name='call_control'),
 ]

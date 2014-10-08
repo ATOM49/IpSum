@@ -30,11 +30,11 @@ class Shop(models.Model):
 
     #Shop Info
     #shop_image_path = models.FilePathField(null = True) # TODO change to store paths only
-    shop_info_text = models.CharField(max_length=2048, null = True)#TODO change to hold file
-    shop_facebookpage = models.CharField(max_length=100,null=True)
-    shop_email = models.EmailField(max_length=30, null = True) # TODO multiple emails
-    likes = models.IntegerField(null=True)
-    visits = models.IntegerField(null=True)
+    shop_info_text = models.CharField(max_length=2048, null=True)#TODO change to hold file
+    shop_facebookpage = models.CharField(max_length=100, null=True)
+    shop_email = models.EmailField(max_length=30, null=True) # TODO multiple emails
+    user_likes = models.IntegerField(null=True)
+    user_visits = models.IntegerField(null=True)
 
 
     #Shop Admin
@@ -64,6 +64,10 @@ class ProductOffer(models.Model):
     points_needed = models.IntegerField(default = 0)#TODO make this flexible
     offer_catalog_item = models.ForeignKey(Catalog, null = True)
     is_eligible = False
+    offer_added = models.DateField(auto_now=True)
+    offer_To = models.DateField()
+    offer_From = models.DateField()
+
 
     def eligibilityCheck(self, user, shop):
         relation, created = ShopUserRelation.objects.get_or_create(user_id=user.id, shop_id=shop.id)
@@ -72,8 +76,14 @@ class ProductOffer(models.Model):
             self.is_eligible = False
         else:
             self.is_eligible = True
+
     def __str__(self):
         return self.offer_name
+
+    def ActiveOffers(self):
+        now = models.DateTimeField(auto_now=True)
+        if self.offer_To <= now <= self.offer_From:
+            self.active = True
 
 
 class ShopUserRelation(models.Model):
@@ -98,11 +108,11 @@ class ShopOffer(models.Model):
     offer_Info = models.CharField(max_length=1024, null = True)
     points_Needed = models.IntegerField(default = 0)#TODO make this flexible
     offer_Category = models.CharField(max_length=5 ,choices = MCM.PRODUCT_CATEGORY_CHOICES())
-    offer_From = models.DateField()
-    offer_To = models.DateField()
     offer_Shop = models.ForeignKey(Shop, null = True)
     is_eligible = False
     offer_added = models.DateField(auto_now=True)
+    offer_From = models.DateField()
+    offer_To = models.DateField()
 
     def eligibilityCheck(self, user):
         relation, created = ShopUserRelation.objects.get_or_create(user_id=user.id, shop_id=self.offer_shop.id)
@@ -115,8 +125,10 @@ class ShopOffer(models.Model):
     def __str__(self):
         return self.offer_name
 
-    def recent(self):
-        pass
+    def ActiveOffers(self):
+        now = models.DateTimeField(auto_now=True)
+        if self.offer_To <= now <= self.offer_From:
+            self.active = True
 
 
 class ProductUserRelation(models.Model):

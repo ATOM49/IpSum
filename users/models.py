@@ -17,7 +17,7 @@ from IpSum import settings
 
 
 class UserProfile(models.Model):
-    avatar = models.ImageField("Profile Pic", upload_to="media/profile_pictures/", blank=True, null=True)
+    avatar = models.ImageField(upload_to="media/profile_pictures/", blank=True, null=True)
     user = models.OneToOneField(User, unique=True)
     contact_no = models.CharField(max_length=15, null=True, blank=True)
     plot_num = models.IntegerField(null=True)

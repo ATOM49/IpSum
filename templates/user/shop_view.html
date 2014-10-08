@@ -27,10 +27,11 @@
     <!--Calling Panel-->
     <div class="container-fluid">
         <div class="panel-default">
-            <div class="panel-heading">Call {{ shop.shop_name }}</div>
+            <div class="panel-heading"> <p> Call {{ shop.shop_name }}</p> </div>
             <div class="panel-body" align="center">
                 <div id="shop_number">{{ shop.shop_contact_no }}</div>
-                <a onClick="call({{ shop.shop_name }});"><i class="fa fa-phone-square fa-4x pull-right"></i></a>
+                <a onClick="call({{ shop.shop_name }});"><i class="fa fa-phone-square fa-4x pull-right"></i></a><br>
+                <div class="panel"><a onClick="hangup();"><strong>Hang up</strong></a></div>
             </div>
         </div>
     </div>
@@ -57,7 +58,7 @@
               {% endif %}
             </div>
             </section>
-          {% if shop.facebookpage %}
+          {% if shop.shop_facebookpage %}
           <div id="fb-root"></div>
             <script>
             (function(d, s, id) {
@@ -68,7 +69,7 @@
               fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
             </script>
-          <div class="fb-like" data-href={{shop.facebook_page}} data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+          <div class="fb-like" data-href={{shop.shop_facebookpage}} data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
           {% endif %}
         </div>
        </div>
@@ -92,7 +93,9 @@
     <div class="container-fluid">
         <div class="panel">
             <div class="panel-body">Rate your experience at {{ shop.shop_name }}
-            <div class="basic pull-right" data-average="12" data-id="1"> </div>
+                <input class="rating pull-right" data-average="12" data-id="1"/>
+            </div>
+        </div>
     </div>
     <!--Main content-->
 
@@ -243,7 +246,7 @@
       Twilio.Device.setup("{{ token }}");
 
       function call(shop) {
-        params = {"shop": shop, "name": '{{client_name}}'};
+        params = {"shop": shop, "name": '{{ user.username }}'};
         Twilio.Device.connect(params);
       }
 
@@ -251,6 +254,6 @@
         Twilio.Device.disconnectAll();
       }
 
-      console.log('{{client_name}}');
+      console.log('{{ user.username }}');
     </script>
 {%endblock%}

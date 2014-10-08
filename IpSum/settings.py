@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SETTINGS_DIR = os.path.dirname(__file__)
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
-TEMPLATE_DIRS = os.path.join(BASE_DIR, "templates")
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 STATICFILES_DIRS = (
     STATIC_PATH,
@@ -33,9 +33,11 @@ SECRET_KEY = 'au*b^+m&z_fjn!@9s3#%lyv_m)083(gsyeydw^ucezlpo37lim'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = (
-    '127.0.0.1' 'atom49.pythonanywhere.com')
+    '*')
 
 
 # Application definition
@@ -48,7 +50,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
-    'south',
     'shops',
     'products',
     'users',
@@ -174,3 +175,9 @@ FACEBOOK_STORE_FRIENDS = True
 TWILIO_ACCOUNT_SID = "AC9dbcad82b20275e6e1854351444f13c3"
 TWILIO_AUTH_TOKEN = "d5eb94487e911314e5620b4ea18e6d74"
 TWILIO_FROM_NUMBER = "(717) 833-6007"
+default_client = 'anonymous'
+
+#Pusher details
+p_key = 'fc3f7ce5a53bc331ec26'
+p_secret = 'ce2ddcccec20e0ecd5a3'
+p_app_id = '89743'

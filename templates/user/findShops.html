@@ -1,27 +1,49 @@
 {% extends 'user/user_base.html' %}
 {% load pagination_tags %}
+{% load crispy_forms_tags %}
 
-{%block title%}Find Shops{%endblock%}
+{% block title %}Find Shops{% endblock %}
 
 
 {% block body_block %}
 
+<style>
+li{
+    list-style-type: none;
+}
+</style>
 
 <h1 align="center">Find Shops</h1>
 <div class="container-fluid" id="shop_searchbar" align="center">
     <div class="input-group">
         <form id="shop_search_form" method="post" action= "{% url 'users:findshops' %}">
             {% csrf_token %}
-            <input type="text" class="form-control" name="querystring" value="{{queryString}}" size="50" placeholder="Type in Name of the Shop"/>
+            <input type="text" class="form-control" name="querystring" value="{{queryString}}" size="50" placeholder="Type in Name of the Shop" autofocus="on"/>
             <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Search</button>
+                <button class="btn btn-default" type="submit" name="search">Search</button>
             </span>
         </form>
     </div><!-- /input-group -->
 </div>
 
+<div class="col-sm-4">
+    <div class="panel" id="filter-panel" >
+        <div class="panel-heading" align="center"><strong>Category Filters</strong></div>
+        <div class="panel-body">
+            <form id="filter" method="post" action = "{% url 'users:findshops' %}">
+            {% csrf_token %}
+                <ul>
+                {% for category in shop_categories %}
+                     <li ><input type="checkbox"  name="category" value="{{ category }}"/>{{ category }}</li>
+                {% endfor %}
+                </ul>
+                <div align="center"><button class="btn btn-default" type="submit" name="filter" value="filter">Filter</button></div>
+            </form>
+        </div>
+    </div>
+</div>
 
-
+<div class="col-sm-8">
 <div class="container-fluid" id="shop_results">
 {% if shop_list %}
     {% autopaginate shop_list 3 %}
@@ -70,7 +92,7 @@
         {% paginate %}
     </div>
 {% else %}
-    <p>No shops are available.</p>
+    <p>No shops are available with those filters</p>
 {% endif %}
-
+</div>
 {% endblock %}

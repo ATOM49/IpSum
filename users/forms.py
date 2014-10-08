@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from users.models import UserProfile
 from django import forms
-from localflavor.in_.forms import INPhoneNumberField, INZipCodeField
+# from localflavor.in_.forms import INPhoneNumberField, INZipCodeField
+from core import modelFieldChoicesManager as MCM
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
@@ -27,6 +28,10 @@ class UserProfileForm(forms.ModelForm):
         return cpassword
 
 
+class ShopFilterForm(forms.Form):
+    category = forms.ChoiceField(widget=forms.CheckboxSelectMultiple, choices=("1","2","3","4"))
+
+
 class EditProfileForm(forms.ModelForm):
 
     class Meta:
@@ -38,8 +43,8 @@ class EditProfileForm(forms.ModelForm):
             'street': _('Street/Apartment')
         }
         widgets = {
-            'contact_no': INPhoneNumberField(),
-            'zipcode': INZipCodeField()
+            # 'contact_no': INPhoneNumberField(),
+            # 'zipcode': INZipCodeField()
         }
 
         def __init__(self):

@@ -1,6 +1,10 @@
 __author__ = 'abhilash.mirji'
 
 from twilio.util import TwilioCapability
+from pusher import Pusher
+from IpSum import settings
+
+#Twilio Functions
 
 def build_twilio_token(client_name):
 
@@ -14,3 +18,11 @@ def build_twilio_token(client_name):
     capability.allow_client_incoming(client_name)
 
     return capability.generate()
+
+
+def generate_voice_twiml(request):
+    item = request.POST.get('item', None)
+    name = request.POST.get('name', None)
+    p = Pusher(settings.p_app_id, settings.p_key, settings.p_secret)
+    p['twilio_call_center'].trigger('new_caller', {'item': item, 'name': name})
+    return '<Response><Dial><Client>Admin</Client></Dial></Response>'

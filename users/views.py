@@ -8,13 +8,13 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from IpSum import settings
 from core.tools import haversine
+from core import modelFieldChoicesManager as MCM
 from products.models import Product
 from shops.models import Shop, Catalog, ShopUserRelation, ProductOffer, ShoppingCart
 from shops.views import HomeView as ShopAdminHomeView
 from users.forms import UserProfile, EditProfileForm
 from PIL import Image
 from django.contrib import messages
-
 from core.twilio_call import build_twilio_token
 
 
@@ -101,15 +101,25 @@ def EditProfileView(request):
 @login_required
 def FindShopsView(request):
     template_name = 'user/findShops.html'
-    context_object_names = ['shop_list', 'queryString']
-    if request.method == 'POST':
-        queryString = request.POST['querystring']
-        shopList = Shop.objects.filter(shop_name__contains=queryString)
-        context_objects = [shopList, queryString]
+    context_object_names = ['shop_list', 'shop_categories', 'queryString']
+    shop_categories = MCM.SHOP_CATEGORY_CHOICES()
+    queryString = request.POST.get('querystring', '')
+    category = request.POST.get('category', False)
+    if request.POST.get('search', False):
+        category = ''
+        shop_list = Shop.objects.filter(shop_name__contains=queryString)
+        context_objects = [shop_list, shop_categories, queryString, category]
+        if request.POST.get('filter', False):
+            shop_list = shop_list.filter(shop_category=category)
+            context_objects = [shop_list, shop_categories, queryString, category]
+    elif request.POST.get('filter', False):
+        shop_list = Shop.objects.get(shop_category=category)
+        context_objects = [shop_list, shop_categories, queryString, category]
     else:
-        queryString = ''
-        shopList = Shop.objects.all()
-        context_objects = [shopList, queryString]
+        shop_list = Shop.objects.all()
+        for shop in shop_list:
+            print str(shop.shop_category)
+        context_objects = [shop_list, shop_categories, queryString, category]
     context = dict(zip(context_object_names, context_objects))
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
@@ -192,7 +202,7 @@ def ShopView(request, shopid):
 
     shop = Shop.objects.get(id=shopid)
     user = request.user
-    relation,created = ShopUserRelation.objects.get_or_create(shop=shop,user=user)
+    relation, created = ShopUserRelation.objects.get_or_create(shop=shop, user=user)
 
     if request.GET.get('cart'):
         itemid = int(request.GET.get('cart'))
@@ -209,11 +219,12 @@ def ShopView(request, shopid):
 
     #get list of product offers
     product_offers = ProductOffer.objects.filter(offer_catalog_item__shop_id=shop.id)
-    for offer in product_offers: offer.eligibilityCheck(user, shop)
 
-    print relation.visited, relation.user_like, relation.loyalty_points
+    for offer in product_offers:
+        offer.eligibilityCheck(user, shop)
 
-    token = build_twilio_token(user)
+    # build twilio token for user
+    token = build_twilio_token(user.username)
 
     context_objects = (shop,
                        shop.catalog_set.all(),
@@ -223,6 +234,7 @@ def ShopView(request, shopid):
                        relation.user_like,
                        relation.loyalty_points,
                        token)
+
     context = RequestContext(request, dict(zip(context_objects_name, context_objects)))
 
     template = loader.get_template(template_name)

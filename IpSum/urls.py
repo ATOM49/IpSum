@@ -14,5 +14,4 @@ urlpatterns = patterns('',
     url(r'^core/', include('core.urls', namespace = "core")),
     url(r'', include('social_auth.urls')),
     # url(r'^facebook/', include('django_facebook.urls')),
-    # url(r'^home/notifications/', include(notifications.urls)),
 )

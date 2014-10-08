@@ -5,7 +5,6 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import loader
 from django.template.context import RequestContext
-from shops.forms import ShopProfileForm
 from users.forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from IpSum import settings
@@ -103,10 +102,6 @@ def RegistrationView(request, usertype):
     else:
         return HttpResponse("invalid user type provided")#TODO replace with 404 error
 
-
-# def cart_context_processor(request):
-#     cart = Cart(request)
-#     return { 'cart_item_count' : cart.item_count }
 
 @login_required
 def LogoutView(request):

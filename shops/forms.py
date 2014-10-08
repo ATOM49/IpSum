@@ -1,7 +1,7 @@
 from django import forms
 from products.models import Product
 from shops.models import Shop, Catalog, ShopOffer, ProductOffer
-from localflavor.in_.forms import INPhoneNumberField, INZipCodeField
+# from localflavor.in_.forms import INPhoneNumberField, INZipCodeField
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset
@@ -27,8 +27,8 @@ class ShopProfileForm(forms.ModelForm):
             'street': _('Street/Apartment')
         }
         widgets = {
-            'shop_contact_no': INPhoneNumberField(),
-            'zipcode': INZipCodeField()
+            # 'shop_contact_no': INPhoneNumberField(),
+            # 'zipcode': INZipCodeField()
         }
 
     def __init__(self):

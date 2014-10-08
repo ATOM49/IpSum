@@ -1,9 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.core.urlresolvers import reverse
-from django.db.models import Sum
 from django.http import HttpResponse
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from products.forms import ProductForm
@@ -63,7 +59,7 @@ def ManageCatalogView(request, shopid):
 
     #check shop access perms
     try:
-        shop = Shop.objects.get(id = shopid)
+        shop = Shop.objects.get(id=shopid)
         if not shop.shop_admin.id == request.user.id:
             raise Exception
     except:
@@ -248,7 +244,7 @@ def ManageShopsView(request):
     if request.method == 'POST':
         shop_form = ShopProfileForm(data=request.POST)
         if shop_form.is_valid():
-            shop = shop_form.save(commit = False)
+            shop = shop_form.save(commit=False)
             shop.shop_admin = request.user
             shop.save()
             shop_form = None
@@ -279,22 +275,9 @@ p_secret='ce2ddcccec20e0ecd5a3'
 
 @login_required
 def CallControlView(request, shopid):
-    p_key='fc3f7ce5a53bc331ec26'
+    p_key = 'fc3f7ce5a53bc331ec26'
     shop = Shop.objects.get(id=shopid)
     call_admin = shop.shop_admin
-    token = build_twilio_token('call_admin')
-
+    token = build_twilio_token(call_admin)
     return render_to_response("shops/control_call.html", {"token" : token,"client_name" : call_admin,
         "pusher_key" : p_key}, context_instance=RequestContext(request))
-
-
-# @login_required
-# def CustomersView(request):
-#     template_name = 'shops/customer.html'
-#     #Show Customer List
-#     shop = Shop.objects.get(id=self.id)
-#     shop = Shop.objects.get(shopuserrelation__shop = shop)
-#     customers = user.objects.get(shop=shop)
-#     context['customers'] = customers
-#     print str(customers)
-#     return render_to_response(template_name, context, context_instance=RequestContext(request))
